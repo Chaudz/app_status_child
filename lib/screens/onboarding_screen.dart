@@ -26,55 +26,58 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFF),
+      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
           child: Column(
             children: [
-            Container(
-              height: 40,
-              child:    Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                    width: 100,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            ...List.generate(
-                                data.length,
-                                    (index) => Padding(padding: EdgeInsets.only(right: 4),
-                                  child: DotIndicator(isActive: index == _pageIndex,),
-                                )
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  if(_pageIndex < 2)
-                    TextButton(
-                        onPressed: ()=>{
-                          Navigator.pushReplacementNamed(context, '/startScreen')
-                        },
-                        child: Text('Bỏ qua',style: AppFont.primaryFont.copyWith(
-                          fontSize: 15
-                        ),)),
-                  if(_pageIndex >= 2)
-                    SizedBox(
-                      width: 100,
-                    )
-                ],
-              ),
-            ),
+           Padding(
+               padding:  EdgeInsets.only(left: 30.0, right: 30.0),
+                child: Container(
+                 height: 40,
+                 child:    Row(
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                   children: [
+                     SizedBox(
+                       width: 100,
+                     ),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.center,
+                       children: [
+                         Container(
+                           child: Row(
+                             children: [
+                               ...List.generate(
+                                   data.length,
+                                       (index) => Padding(padding: EdgeInsets.only(right: 4),
+                                     child: DotIndicator(isActive: index == _pageIndex,),
+                                   )
+                               ),
+                             ],
+                           ),
+                         ),
+                       ],
+                     ),
+                     if(_pageIndex < 2)
+                       TextButton(
+                           onPressed: ()=>{
+                             Navigator.pushReplacementNamed(context, '/startScreen')
+                           },
+                           child: Text('Bỏ qua',style: AppFont.primaryFont.copyWith(
+                               fontSize: 15
+                           ),)),
+                     if(_pageIndex >= 2)
+                       SizedBox(
+                         width: 100,
+                       )
+                   ],
+                 ),
+               )),
               Expanded(
                 child: PageView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   controller: _pageController,
                     onPageChanged: (index)=>{
                     setState((){
@@ -151,40 +154,45 @@ class OnboardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Column(
-          children: [
-            SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 200,
-              width: 350,
-              decoration: BoxDecoration(
-                // color: Colors.lightGreen,
-                image:  DecorationImage(
-                  image: AssetImage('assets/images/onboard1.gif'),
-                  // fit: BoxFit.cover,
+    return Padding(
+      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+      child:Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                height: 200,
+                width: 350,
+                decoration: BoxDecoration(
+                  // color: Colors.lightGreen,
+                  image:  DecorationImage(
+                    image: AssetImage('assets/images/onboard1.gif'),
+                    // fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Text(title,style: AppFont.primaryFont,textAlign: TextAlign.center),
-            SizedBox(
-              height: 10,
-            ),
-            Text(description,style: AppFont.primaryFont.copyWith(
-              fontSize: 15,
-              fontWeight: FontWeight.normal
-            ),textAlign: TextAlign.center),
-          ],
-        ),
-      ],
+              SizedBox(
+                height: 20,
+              ),
+              Text(title,style: AppFont.primaryFont.copyWith(
+                  fontWeight: FontWeight.w600
+              ),textAlign: TextAlign.center),
+              SizedBox(
+                height: 10,
+              ),
+              Text(description,style: AppFont.primaryFont.copyWith(
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal
+              ),textAlign: TextAlign.center),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

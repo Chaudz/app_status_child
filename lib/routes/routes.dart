@@ -13,5 +13,6 @@ var routes = {
   '/nameBaby': (context) => NameBaby(),
   '/birthdayBaby': (context) => BirthdayBaby(),
   '/avatarBaby': (context) => AvatarBaby(),
-  '/addBaby': (context) => AddBabyScreen()
+  '/addBaby': (context) => AddBabyScreen(),
+  '/addBabyDetail': (context) => AddBabyDetail()
 };

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/choose_info_screen.dart';
+import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
 
 class OnBoardingScreen extends StatefulWidget {
@@ -26,7 +28,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColor.background,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.only(top: 30.0, bottom: 30.0),
@@ -66,7 +68,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                              Navigator.pushReplacementNamed(context, '/startScreen')
                            },
                            child: Text('Bỏ qua',style: AppFont.primaryFont.copyWith(
-                               fontSize: 15
+                               fontSize: 15,
+                               color: Colors.black
                            ),)),
                      if(_pageIndex >= 2)
                        SizedBox(
@@ -104,11 +107,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFAFAFA),
+                    backgroundColor: Colors.pinkAccent,
                     shadowColor: Colors.black,
                   ),
                   child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
-                    fontSize: 15
+                    fontSize: 15,
+                      color: Colors.white
                   ),),
                 ),
               )
@@ -180,14 +184,16 @@ class OnboardContent extends StatelessWidget {
                 height: 20,
               ),
               Text(title,style: AppFont.primaryFont.copyWith(
-                  fontWeight: FontWeight.w600
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black
               ),textAlign: TextAlign.center),
               SizedBox(
                 height: 10,
               ),
               Text(description,style: AppFont.primaryFont.copyWith(
                   fontSize: 18,
-                  fontWeight: FontWeight.normal
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black
               ),textAlign: TextAlign.center),
             ],
           ),

@@ -2,8 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:myapp/themes/app_fonts.dart';
+import 'package:myapp/widgets/next_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:myapp/themes/app_colors.dart';
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
 
@@ -45,17 +46,17 @@ class StartScreen extends StatelessWidget {
                     Navigator.pushNamed(context, '/gender')
                },
                style: ElevatedButton.styleFrom(
-                 padding: EdgeInsets.only(right: 30,left: 30,top: 10,bottom: 10),
-                 backgroundColor: Colors.red,
+                 padding: EdgeInsets.only(right: 30,left: 30,top: 15,bottom: 15),
+                 backgroundColor: Color.fromRGBO(255, 127, 135, 1.0)
                ),
                child: Text('Bắt đầu',style: AppFont.primaryFont.copyWith(
                  color: Colors.white,
-                 fontSize: 15
+                 fontSize: 15,fontWeight: FontWeight.w600
                ),)),
             SizedBox(
               height: 30,
             ),
-            Text('Tôi có một tài khoản hoặc lời mời'),
+            Text('Tôi có một tài khoản hoặc lời mời',style:AppFont.primaryFont.copyWith( fontSize: 15)),
             SizedBox(
               height: 5
             ),
@@ -63,7 +64,7 @@ class StartScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/loginScreen')
             },
                 child: Text('Đăng nhập', style: AppFont.primaryFont.copyWith(
-                  color: Colors.red,
+                  color: Color.fromRGBO(255, 127, 135, 1.0),
                   fontSize: 15,
                   fontWeight: FontWeight.w600
                 ),))
@@ -99,19 +100,20 @@ class _GenderBabyState extends State<GenderBaby> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.background,
       body: Center(
         child: Padding(
           padding: EdgeInsets.only(top: 100, left: 30, right: 30),
           child: Column(
             children: [
               Text('Em bé của bạn là gái hay trai?', style: AppFont.primaryFont.copyWith(
-                fontWeight: FontWeight.w600
+                fontWeight: FontWeight.w600,
               ),),
               SizedBox(
                 height: 10
               ),
               Text('Nếu là sinh đôi, bạn có thể thêm hồ sơ em bé còn lại sau', style: AppFont.primaryFont.copyWith(
-                fontSize: 16
+                fontSize: 16,
               ),),
               SizedBox(
                 height: 100
@@ -164,18 +166,7 @@ class _GenderBabyState extends State<GenderBaby> {
               SizedBox(
                 height: 40
               ),
-              ElevatedButton(
-                  onPressed: ()=>{
-                    Navigator.pushNamed(context, '/nameBaby',arguments: gender)
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                    backgroundColor: Colors.white
-                  ),
-                  child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600
-                  ),))
+              NextButton(nameRouter: "/nameBaby",argumentValue: gender,)
             ],
           ),
         ),
@@ -200,6 +191,7 @@ class _NameBabyState extends State<NameBaby> {
     String? gender = ModalRoute.of(context)?.settings.arguments as String?;
 
     return Scaffold(
+      backgroundColor: AppColor.background,
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.only(top: 50, left: 30, right: 30),
@@ -208,13 +200,13 @@ class _NameBabyState extends State<NameBaby> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Bé $gender của bạn tên gì?', style: AppFont.primaryFont.copyWith(
-                  fontWeight: FontWeight.w600
+                  fontWeight: FontWeight.w600,
               ),),
               SizedBox(
                 height: 10,
               ),
               Text('Bạn có thể thay đổi những dữ liệu này sau',style: AppFont.primaryFont.copyWith(
-                  fontSize: 15
+                  fontSize: 15,
               ),),
               Container(
                 height: 200,
@@ -228,12 +220,13 @@ class _NameBabyState extends State<NameBaby> {
                 ),
               ),
               Text('Tên em bé', style: AppFont.primaryFont.copyWith(
-                  fontSize: 15
+                  fontSize: 15,color: Colors.white
               ),),
               SizedBox(
                   height: 10
               ),
               TextField(
+                style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
                 controller: nameController,
                 onChanged: (value)=>{
                   setState((){
@@ -244,9 +237,12 @@ class _NameBabyState extends State<NameBaby> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     labelText: 'Thêm tên',
                     labelStyle: TextStyle(
-                        fontWeight: FontWeight.w600
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white
                     ),
-                    border: OutlineInputBorder()
+                    filled: true, // Bật chế độ filled
+                    fillColor: Colors.pinkAccent,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(40.0),borderSide: BorderSide.none)
                 ),
               ),
               SizedBox(
@@ -263,18 +259,22 @@ class _NameBabyState extends State<NameBaby> {
                       }: null,
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                          backgroundColor: Colors.white,
+                          backgroundColor: Colors.pinkAccent,
                       ),
-                      child: Text('Tiếp',style: (nameBaby.trim() != '' ? AppFont.primaryFont.copyWith(
+                      child: Text('Tiếp', style:
+                      nameBaby.trim() != '' ?
+                      AppFont.primaryFont.copyWith(
                           fontSize: 18,
-                          fontWeight: FontWeight.w600
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white
                       ):
                       AppFont.primaryFont.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black12
+                          color: Colors.white
                       )
-                      )))
+                      )
+                  )
                 ],
               ),
             ],
@@ -300,6 +300,7 @@ class _BirthdayBabyState extends State<BirthdayBaby> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.background,
       body: Padding(
         padding: EdgeInsets.only(top: 50, left: 30, right: 30),
         child: Column(
@@ -331,9 +332,11 @@ class _BirthdayBabyState extends State<BirthdayBaby> {
           Container(
             height: 100,
             child:  CupertinoDatePicker(
+
               mode: CupertinoDatePickerMode.date,
               initialDateTime: date,
               use24hFormat: true,
+
               onDateTimeChanged: (DateTime newTime) {
                 setState(() => date = newTime);
               },
@@ -351,11 +354,12 @@ class _BirthdayBabyState extends State<BirthdayBaby> {
                    },
                    style: ElevatedButton.styleFrom(
                        padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                       backgroundColor: Colors.white
+                       backgroundColor: Colors.pinkAccent
                    ),
                    child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
                        fontSize: 18,
-                       fontWeight: FontWeight.w600
+                       fontWeight: FontWeight.w600,
+                       color: Colors.white
                    ),))
              ],
            ),
@@ -393,6 +397,7 @@ class _AvatarBabyState extends State<AvatarBaby> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.background,
       body: Padding(
         padding: EdgeInsets.only(top: 50, left: 30, right: 30),
         child: Column(
@@ -420,12 +425,12 @@ class _AvatarBabyState extends State<AvatarBaby> {
                       style: ElevatedButton.styleFrom(
                           shape: CircleBorder(),
                           minimumSize: Size(150, 150),
-                        backgroundColor: Colors.white
+                          backgroundColor: Colors.pinkAccent
                       ),
                       child: Text(nameBaby.isNotEmpty? nameBaby[0].toUpperCase() : '',style: AppFont.primaryFont.copyWith(
-                          fontSize: 40,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.purple
+                          fontSize: 90,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white
                       ),
                       ),
                     ),
@@ -451,18 +456,7 @@ class _AvatarBabyState extends State<AvatarBaby> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    onPressed: ()=>{
-                      Navigator.pushNamed(context, '/avatarBaby')
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                        backgroundColor: Colors.white
-                    ),
-                    child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600
-                    ),))
+               NextButton(nameRouter: "/createInfo")
               ],
             ),
         ],

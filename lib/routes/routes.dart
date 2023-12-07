@@ -1,5 +1,3 @@
-// import 'dart:js';
-
 import 'package:myapp/screens/choose_info_screen.dart';
 import 'package:myapp/screens/login_screen.dart';
 import 'package:myapp/screens/onboarding_screen.dart';

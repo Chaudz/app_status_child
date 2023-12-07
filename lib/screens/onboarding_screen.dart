@@ -68,7 +68,8 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                              Navigator.pushReplacementNamed(context, '/startScreen')
                            },
                            child: Text('Bỏ qua',style: AppFont.primaryFont.copyWith(
-                               fontSize: 15,color: Colors.white
+                               fontSize: 15,
+                               color: Colors.black
                            ),)),
                      if(_pageIndex >= 2)
                        SizedBox(
@@ -106,11 +107,12 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromRGBO(98, 85, 94, 1.0),
+                    backgroundColor: Colors.pinkAccent,
                     shadowColor: Colors.black,
                   ),
                   child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
-                    fontSize: 15,color: Colors.white
+                    fontSize: 15,
+                      color: Colors.white
                   ),),
                 ),
               )
@@ -182,14 +184,16 @@ class OnboardContent extends StatelessWidget {
                 height: 20,
               ),
               Text(title,style: AppFont.primaryFont.copyWith(
-                  fontWeight: FontWeight.w600,color: Colors.white
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black
               ),textAlign: TextAlign.center),
               SizedBox(
                 height: 10,
               ),
               Text(description,style: AppFont.primaryFont.copyWith(
                   fontSize: 18,
-                  fontWeight: FontWeight.normal,color: Colors.white
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black
               ),textAlign: TextAlign.center),
             ],
           ),

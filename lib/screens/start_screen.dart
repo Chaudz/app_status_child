@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:myapp/themes/app_fonts.dart';
+import 'package:myapp/widgets/next_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:myapp/themes/app_colors.dart';
 class StartScreen extends StatelessWidget {
@@ -10,7 +11,6 @@ class StartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.background,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -30,7 +30,7 @@ class StartScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Text('Hãy tuỳ chỉnh ứng dụng của bạn', style: AppFont.primaryFont,textAlign: TextAlign.center,),
+            Text('Hãy tuỳ chỉnh ứng dụng của bạn', style: AppFont.primaryFont,textAlign: TextAlign.center),
             SizedBox(
               height: 45
             ),
@@ -100,20 +100,20 @@ class _GenderBabyState extends State<GenderBaby> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(64, 53, 61, 1.0),
+      backgroundColor: AppColor.background,
       body: Center(
         child: Padding(
           padding: EdgeInsets.only(top: 100, left: 30, right: 30),
           child: Column(
             children: [
               Text('Em bé của bạn là gái hay trai?', style: AppFont.primaryFont.copyWith(
-                fontWeight: FontWeight.w600,color: Colors.white
+                fontWeight: FontWeight.w600,
               ),),
               SizedBox(
                 height: 10
               ),
               Text('Nếu là sinh đôi, bạn có thể thêm hồ sơ em bé còn lại sau', style: AppFont.primaryFont.copyWith(
-                fontSize: 16,color: Colors.white
+                fontSize: 16,
               ),),
               SizedBox(
                 height: 100
@@ -166,19 +166,7 @@ class _GenderBabyState extends State<GenderBaby> {
               SizedBox(
                 height: 40
               ),
-              ElevatedButton(
-                  onPressed: ()=>{
-                    Navigator.pushNamed(context, '/nameBaby',arguments: gender)
-                  },
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                    backgroundColor: Color.fromRGBO(98, 85, 94, 1.0)
-                  ),
-                  child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                      color: Colors.white
-                  ),))
+              NextButton(nameRouter: "/nameBaby",argumentValue: gender,)
             ],
           ),
         ),
@@ -212,13 +200,13 @@ class _NameBabyState extends State<NameBaby> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Bé $gender của bạn tên gì?', style: AppFont.primaryFont.copyWith(
-                  fontWeight: FontWeight.w600,color: Colors.white
+                  fontWeight: FontWeight.w600,
               ),),
               SizedBox(
                 height: 10,
               ),
               Text('Bạn có thể thay đổi những dữ liệu này sau',style: AppFont.primaryFont.copyWith(
-                  fontSize: 15,color: Colors.white
+                  fontSize: 15,
               ),),
               Container(
                 height: 200,
@@ -249,10 +237,11 @@ class _NameBabyState extends State<NameBaby> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     labelText: 'Thêm tên',
                     labelStyle: TextStyle(
-                        fontWeight: FontWeight.w600,color: Colors.white60
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white
                     ),
                     filled: true, // Bật chế độ filled
-                    fillColor: Color.fromRGBO(98, 85, 94, 1.0),
+                    fillColor: Colors.pinkAccent,
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(40.0),borderSide: BorderSide.none)
                 ),
               ),
@@ -270,18 +259,22 @@ class _NameBabyState extends State<NameBaby> {
                       }: null,
                       style: ElevatedButton.styleFrom(
                           padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                          backgroundColor: Color.fromRGBO(98, 85, 94, 1.0),
+                          backgroundColor: Colors.pinkAccent,
                       ),
-                      child: Text('Tiếp',style: (nameBaby.trim() != '' ? AppFont.primaryFont.copyWith(
+                      child: Text('Tiếp', style:
+                      nameBaby.trim() != '' ?
+                      AppFont.primaryFont.copyWith(
                           fontSize: 18,
-                          fontWeight: FontWeight.w600
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white
                       ):
                       AppFont.primaryFont.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
-                          color: Colors.black12
+                          color: Colors.white
                       )
-                      )))
+                      )
+                  )
                 ],
               ),
             ],
@@ -361,12 +354,12 @@ class _BirthdayBabyState extends State<BirthdayBaby> {
                    },
                    style: ElevatedButton.styleFrom(
                        padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                       backgroundColor: Color.fromRGBO(98, 85, 94, 1.0)
+                       backgroundColor: Colors.pinkAccent
                    ),
                    child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
                        fontSize: 18,
                        fontWeight: FontWeight.w600,
-
+                       color: Colors.white
                    ),))
              ],
            ),
@@ -432,12 +425,12 @@ class _AvatarBabyState extends State<AvatarBaby> {
                       style: ElevatedButton.styleFrom(
                           shape: CircleBorder(),
                           minimumSize: Size(150, 150),
-                        backgroundColor: Color.fromRGBO(98, 85, 94, 1.0)
+                          backgroundColor: Colors.pinkAccent
                       ),
                       child: Text(nameBaby.isNotEmpty? nameBaby[0].toUpperCase() : '',style: AppFont.primaryFont.copyWith(
                           fontSize: 90,
                           fontWeight: FontWeight.bold,
-                          color: Color.fromRGBO(186, 157, 130, 1.0)
+                          color: Colors.white
                       ),
                       ),
                     ),
@@ -463,18 +456,7 @@ class _AvatarBabyState extends State<AvatarBaby> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                    onPressed: ()=>{
-                      Navigator.pushNamed(context, '/createInfo')
-                    },
-                    style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
-                        backgroundColor:Color.fromRGBO(98, 85, 94, 1.0)
-                    ),
-                    child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600
-                    ),))
+               NextButton(nameRouter: "/createInfo")
               ],
             ),
         ],

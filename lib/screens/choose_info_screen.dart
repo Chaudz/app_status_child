@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class CreateInfo extends StatefulWidget {
   State<CreateInfo> createState() => _CreateInfoState();
 }
 
-Color backgroundColor = Color.fromRGBO(64, 53, 61, 1.0);
+// Color backgroundColor = Color.fromRGBO(64, 53, 61, 1.0);
 
 class _CreateInfoState extends State<CreateInfo> {
   bool btn1 = false;
@@ -40,7 +41,7 @@ class _CreateInfoState extends State<CreateInfo> {
       title: 'choose info',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: backgroundColor, // Màu nền xám,
+        backgroundColor: AppColor.background,
         body: Container(
           child: Column(
             children: [
@@ -76,7 +77,7 @@ class _CreateInfoState extends State<CreateInfo> {
                     style: ElevatedButton.styleFrom(
                         padding:
                             EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                        backgroundColor: Color.fromRGBO(98, 85, 94, 1.0),
+                        backgroundColor: Colors.pinkAccent,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(40.0))),
                     child: Text(
@@ -137,15 +138,17 @@ Widget titleOne = new Container(
         children: [
           Container(
             child: Text('Mark your goals',
-                style: TextStyle(
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white)),
+                style: AppFont.primaryFont.copyWith(
+
+                )
+            ),
             padding: EdgeInsets.only(bottom: 10.0),
           ),
           Text(
             'Please select one or more item',
-            style: TextStyle(fontSize: 20.0, color: Colors.grey[200]),
+            style: AppFont.primaryFont.copyWith(
+              fontSize: 15,
+            ),
           )
         ],
       )),
@@ -177,7 +180,7 @@ class _TitleSectionContentState extends State<TitleSectionContent> {
         widget.setBtn();
 
         setState(() {
-          isPressed = !isPressed; // Đảo ngược giá trị trạng thái
+          isPressed = !isPressed;
         });
       },
       child: Padding(
@@ -185,12 +188,12 @@ class _TitleSectionContentState extends State<TitleSectionContent> {
         child: Container(
           padding: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
-            color: isPressed ? Colors.white : Color.fromRGBO(98, 85, 94, 1.0),
+            color: isPressed ?Color.fromRGBO(98, 85, 94, 1.0) : Colors.black12,
             borderRadius: BorderRadius.circular(40.0),
           ),
           child: Row(
             mainAxisAlignment:
-                MainAxisAlignment.spaceBetween, // Căn giữa theo chiều ngang
+                MainAxisAlignment.spaceBetween,
             children: [
               Image(image: AssetImage(widget.image)),
               SizedBox(width: 5.0),
@@ -200,7 +203,7 @@ class _TitleSectionContentState extends State<TitleSectionContent> {
                   style: TextStyle(
                       fontSize: 20.0,
                       fontWeight: FontWeight.w600,
-                      color: isPressed ? Colors.black : Colors.white),
+                      color: isPressed ? Colors.white: Colors.black, )
                 ),
               ),
             ],

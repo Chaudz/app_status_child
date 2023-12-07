@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/services/auth_service.dart';
 import 'package:myapp/themes/app_fonts.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -52,7 +53,17 @@ class LoginScreen extends StatelessWidget {
                   height: 60
               ),
               ElevatedButton(
-                  onPressed: ()=>{},
+                  onPressed: ()async {
+                    User? user = await AuthService().signInWithGoogle();
+                    if (user != null) {
+                      Navigator.pushNamedAndRemoveUntil(context,'/addBaby', (route)=> false );
+                    print("User signed in: ${user.displayName}");
+                    print("User email: ${user.photoURL}");
+                    // In ra các thông tin khác của user nếu cần
+                    } else {
+                    print("Google sign-in failed.");
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                       padding: EdgeInsets.all(15),
                       backgroundColor: Color(0xFFFFFFFF),

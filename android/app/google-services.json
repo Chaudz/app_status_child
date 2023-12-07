@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "79330429129",
+    "project_id": "tomapp-66469",
+    "storage_bucket": "tomapp-66469.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:79330429129:android:a4638ac11aa5ee32d42518",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC69sKV7nzRywvpdLy3moOiS_BcgRZfAyc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

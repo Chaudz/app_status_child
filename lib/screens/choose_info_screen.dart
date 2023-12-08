@@ -71,7 +71,7 @@ class _CreateInfoState extends State<CreateInfo> {
                       child: ElevatedButton(
                     onPressed: (btn1 || btn2 || btn3 || btn4)
                         ? () async {
-                            Navigator.pushNamed(context, '/createInfo');
+                            Navigator.pushNamed(context, '/chooseEatInfo');
                           }
                         : null,
                     style: ElevatedButton.styleFrom(
@@ -88,7 +88,8 @@ class _CreateInfoState extends State<CreateInfo> {
                         color: Colors.white
                       ),
                     ),
-                  ),),
+                  ),
+                  ),
                   SizedBox(height: 60.0), // Khoảng cách bên dưới
                 ],
               ),

@@ -456,7 +456,19 @@ class _AvatarBabyState extends State<AvatarBaby> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-               NextButton(nameRouter: "/createInfo")
+                ElevatedButton(
+                    onPressed: ()=>{
+                      Navigator.pushNamedAndRemoveUntil(context,"/createInfo",(route) => false )
+                    },
+                    style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.only(top: 15, bottom: 15, right: 30,left: 30),
+                        backgroundColor: Colors.pinkAccent
+                    ),
+                    child: Text('Tiếp',style: AppFont.primaryFont.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white
+                    ),))
               ],
             ),
         ],

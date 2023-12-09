@@ -70,6 +70,15 @@ class _CreateInfoState extends State<CreateInfo> {
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.symmetric(
                             vertical: 20, horizontal: 30),
+                      child: ElevatedButton(
+                    onPressed: (btn1 || btn2 || btn3 || btn4)
+                        ? () async {
+                            Navigator.pushNamed(context, '/chooseEatInfo');
+                          }
+                        : null,
+                    style: ElevatedButton.styleFrom(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                         backgroundColor: Colors.pinkAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.0),
@@ -84,6 +93,7 @@ class _CreateInfoState extends State<CreateInfo> {
                         ),
                       ),
                     ),
+                  ),
                   ),
                   SizedBox(height: 60.0), // Khoảng cách bên dưới
                 ],

@@ -91,6 +91,7 @@ flutter:
      - assets/images/icons8-user-30.png
      - assets/images/icons8-baby-bottle-64.png
      - assets/images/both.png
+     - assets/images/loading-48.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -1,5 +1,8 @@
+import 'package:myapp/screens/choose_eats_baby_screen.dart';
 import 'package:myapp/screens/choose_info_screen.dart';
 import 'package:myapp/screens/addBaby_screen.dart';
+import 'package:myapp/screens/home_screen.dart';
+import 'package:myapp/screens/loading_splash_screen.dart';
 import 'package:myapp/screens/login_screen.dart';
 import 'package:myapp/screens/onboarding_screen.dart';
 import 'package:myapp/screens/splash_screen.dart';
@@ -19,5 +22,7 @@ var routes = {
   '/addBaby': (context) => AddBabyScreen(),
   '/addBabyDetail': (context) => AddBabyDetail(),
   '/feedingScreen':(context)=> FeedingScreen(),
-
+  '/chooseEatInfo': (context) => ChooseEatsBabyScreen(),
+  '/loadingData': (context) => LoadingSplashScreen(),
+  '/homeScreen': (context) => HomeScreen(),
 };

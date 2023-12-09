@@ -4,6 +4,7 @@ import 'package:myapp/screens/login_screen.dart';
 import 'package:myapp/screens/onboarding_screen.dart';
 import 'package:myapp/screens/splash_screen.dart';
 import 'package:myapp/screens/start_screen.dart';
+import 'package:myapp/screens/feeding_sceen.dart';
 
 var routes = {
   '/home': (context) => SplashScreen(),
@@ -16,5 +17,7 @@ var routes = {
   '/avatarBaby': (context) => AvatarBaby(),
   '/createInfo':(context)=> CreateInfo(),
   '/addBaby': (context) => AddBabyScreen(),
-  '/addBabyDetail': (context) => AddBabyDetail()
+  '/addBabyDetail': (context) => AddBabyDetail(),
+  '/feedingScreen':(context)=> FeedingScreen(),
+
 };

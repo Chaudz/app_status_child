@@ -241,7 +241,7 @@ class _NameBabyState extends State<NameBaby> {
                         color: Colors.white
                     ),
                     filled: true, // Bật chế độ filled
-                    fillColor: Colors.pinkAccent,
+                    fillColor: Colors.pink[200],
                     border: OutlineInputBorder(borderRadius: BorderRadius.circular(40.0),borderSide: BorderSide.none)
                 ),
               ),

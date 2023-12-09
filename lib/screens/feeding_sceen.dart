@@ -57,7 +57,7 @@ class _FeedingScreenState extends State<FeedingScreen> {
                     child: ElevatedButton(
                       onPressed: (selectedButton != -1)
                           ? () async {
-                        Navigator.pushNamed(context, '/createInfo');
+                        Navigator.pushNamed(context, '/loadingData');
                       }
                           : null,
                       style: ElevatedButton.styleFrom(

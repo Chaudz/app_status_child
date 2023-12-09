@@ -90,6 +90,10 @@ flutter:
      - assets/images/icons8-moon-48.png
      - assets/images/icons8-user-30.png
      - assets/images/loading-48.gif
+     - assets/images/icons8-no-reminders-50.png
+     - assets/images/icons8-in-inventory-50.png
+     - assets/images/icons8-home-24.png
+     - assets/images/icons8-doughnut-chart-64.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

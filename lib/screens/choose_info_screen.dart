@@ -13,6 +13,8 @@ class CreateInfo extends StatefulWidget {
   State<CreateInfo> createState() => _CreateInfoState();
 }
 
+// Color backgroundColor = Color.fromRGBO(64, 53, 61, 1.0);
+
 class _CreateInfoState extends State<CreateInfo> {
   List<bool> buttonStates = [false, false, false, false];
 
@@ -34,24 +36,23 @@ class _CreateInfoState extends State<CreateInfo> {
             children: [
               titleOne,
               Flexible(
-                child: ListView.builder(
-                  itemCount: data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var titleSection = data[index];
-                    return Column(
-                      children: [
-                        TitleSectionContent(
-                          image: titleSection.image,
-                          title: titleSection.title,
-                          setBtn: () => {setButton(index)},
-                          isSelected: buttonStates[index],
-                        ),
-                        SizedBox(height: 30.0),
-                      ],
-                    );
-                  },
-                ),
-              ),
+                  child: ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var titleSection = data[index];
+                      return Column(
+                        children: [
+                          TitleSectionContent(
+                            image: titleSection.image,
+                            title: titleSection.title,
+                            setBtn: () => {setButton(index)},
+                            isSelected: buttonStates[index],
+                          ),
+                          SizedBox(height: 30.0),
+                        ],
+                      );
+                    },
+                  )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -68,32 +69,20 @@ class _CreateInfoState extends State<CreateInfo> {
                       }
                           : null,
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 30),
-                      child: ElevatedButton(
-                    onPressed: (btn1 || btn2 || btn3 || btn4)
-                        ? () async {
-                            Navigator.pushNamed(context, '/chooseEatInfo');
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 30),
-                        backgroundColor: Colors.pinkAccent,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40.0),
-                        ),
-                      ),
+                          padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                          backgroundColor: Colors.pinkAccent,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(40.0))),
                       child: Text(
                         'Tiếp',
                         style: AppFont.primaryFont.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white
                         ),
                       ),
                     ),
-                  ),
                   ),
                   SizedBox(height: 60.0), // Khoảng cách bên dưới
                 ],

@@ -3,29 +3,23 @@ import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
 
 void main() {
-  runApp(CreateInfo());
+  runApp(FeedingScreen());
 }
 
-class CreateInfo extends StatefulWidget {
-  const CreateInfo({Key? key});
+class FeedingScreen extends StatefulWidget {
+  const FeedingScreen({Key? key});
 
   @override
-  State<CreateInfo> createState() => _CreateInfoState();
+  State<FeedingScreen> createState() => _FeedingScreenState();
 }
 
-class _CreateInfoState extends State<CreateInfo> {
-  List<bool> buttonStates = [false, false, false, false];
-
-  void setButton(index) {
-    setState(() {
-      buttonStates[index] = !buttonStates[index];
-    });
-  }
+class _FeedingScreenState extends State<FeedingScreen> {
+  int selectedButton = 0;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'choose info',
+      title: 'Feeding Screen',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: AppColor.background,
@@ -43,8 +37,12 @@ class _CreateInfoState extends State<CreateInfo> {
                         TitleSectionContent(
                           image: titleSection.image,
                           title: titleSection.title,
-                          setBtn: () => {setButton(index)},
-                          isSelected: buttonStates[index],
+                          onPressed: () {
+                            setState(() {
+                              selectedButton = index;
+                            });
+                          },
+                          isSelected: selectedButton == index,
                         ),
                         SizedBox(height: 30.0),
                       ],
@@ -57,28 +55,14 @@ class _CreateInfoState extends State<CreateInfo> {
                 children: [
                   SizedBox(
                     child: ElevatedButton(
-                      onPressed: (buttonStates.contains(true))
+                      onPressed: (selectedButton != -1)
                           ? () async {
-                        // Reset button states when navigating back
-                        setState(() {
-                          buttonStates = [false, false, false, false];
-                        });
-                        Navigator.pushNamed(
-                            context, '/feedingScreen');
+                        Navigator.pushNamed(context, '/createInfo');
                       }
                           : null,
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 20, horizontal: 30),
-                      child: ElevatedButton(
-                    onPressed: (btn1 || btn2 || btn3 || btn4)
-                        ? () async {
-                            Navigator.pushNamed(context, '/chooseEatInfo');
-                          }
-                        : null,
-                    style: ElevatedButton.styleFrom(
                         padding:
-                            EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                        EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                         backgroundColor: Colors.pinkAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.0),
@@ -94,7 +78,6 @@ class _CreateInfoState extends State<CreateInfo> {
                       ),
                     ),
                   ),
-                  ),
                   SizedBox(height: 60.0), // Khoảng cách bên dưới
                 ],
               ),
@@ -109,19 +92,15 @@ class _CreateInfoState extends State<CreateInfo> {
 final List<TitleSection> data = [
   TitleSection(
     image: 'assets/images/icons8-bra-48.png',
-    title: 'Thiết lập việc nuôi con bằng sữa mẹ',
+    title: 'Cho con bú',
   ),
   TitleSection(
-    image: 'assets/images/icons8-moon-48.png',
-    title: 'Tạo thói quen ngủ và ăn uống',
+    image: 'assets/images/icons8-baby-bottle-64.png',
+    title: 'Bú bình   ',
   ),
   TitleSection(
-    image: 'assets/images/icons8-arrow-48.png',
-    title: 'Theo dõi tăng trưởng và phát triển',
-  ),
-  TitleSection(
-    image: 'assets/images/icons8-milk-bottle-48.png',
-    title: 'Hút và lưu trữ sữa mẹ',
+    image: 'assets/images/both.png',
+    title: 'Bú kết hợp',
   ),
 ];
 
@@ -143,19 +122,13 @@ Widget titleOne = new Container(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: Text('Đánh dấu mục tiêu của bạn',
+              child: Text('Chỉ định loại nuôi con',
                   style: AppFont.primaryFont.copyWith(
-                      fontSize: 30,
-                    fontWeight: FontWeight.bold
+                    fontWeight: FontWeight.bold,
+                    fontSize: 30
                   )),
               padding: EdgeInsets.only(bottom: 10.0),
             ),
-            Text(
-              'Vui lòng chọn một hoặc nhiều mục',
-              style: AppFont.primaryFont.copyWith(
-                fontSize: 20,
-              ),
-            )
           ],
         ),
       ),
@@ -168,41 +141,41 @@ class TitleSectionContent extends StatelessWidget {
     Key? key,
     required this.image,
     required this.title,
-    required this.setBtn,
+    required this.onPressed,
     required this.isSelected,
   }) : super(key: key);
 
   final String image, title;
-  final VoidCallback setBtn;
+  final VoidCallback onPressed;
   final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: setBtn,
+      onTap: onPressed,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Container(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(20.0),
           decoration: BoxDecoration(
-            color: isSelected
-                ? Colors.grey[500]
-                : Colors.black12,
-            borderRadius: BorderRadius.circular(40.0),
+            color: isSelected ? Colors.grey[500] : Colors.black12,
+            borderRadius: BorderRadius.circular(30.0),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              SizedBox(width: 10.0),
+              SizedBox(width: 30.0),
               Image(image: AssetImage(image)),
-              SizedBox(width: 10.0),
+              SizedBox(width: 60.0),
               Expanded(
                 child: Text(
+
                   title,
                   style: TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.white : Colors.black),
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600,
+                    color: isSelected ? Colors.white : Colors.black,
+                  ),
                 ),
               ),
             ],

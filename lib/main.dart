@@ -30,7 +30,6 @@ class _MyAppState extends State<MyApp> {
 
   Future<bool> getRecord() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print('Chau====================');
     bool storedNameBaby = prefs.getBool("record") ?? false;
     return storedNameBaby;;
   }

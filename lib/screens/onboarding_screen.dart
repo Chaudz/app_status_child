@@ -158,46 +158,48 @@ class OnboardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-      child:Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            children: [
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                height: 200,
-                width: 350,
-                decoration: BoxDecoration(
-                  // color: Colors.lightGreen,
-                  image:  DecorationImage(
-                    image: AssetImage('assets/images/onboard1.gif'),
-                    // fit: BoxFit.cover,
+    return SingleChildScrollView(
+      child: Padding(
+        padding: EdgeInsets.only(left: 30.0, right: 30.0),
+        child:Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: 200,
+                  width: 350,
+                  decoration: BoxDecoration(
+                    // color: Colors.lightGreen,
+                    image:  DecorationImage(
+                      image: AssetImage('assets/images/onboard1.gif'),
+                      // fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(title,style: AppFont.primaryFont.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black
-              ),textAlign: TextAlign.center),
-              SizedBox(
-                height: 10,
-              ),
-              Text(description,style: AppFont.primaryFont.copyWith(
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black
-              ),textAlign: TextAlign.center),
-            ],
-          ),
-        ],
+                SizedBox(
+                  height: 20,
+                ),
+                Text(title,style: AppFont.primaryFont.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black
+                ),textAlign: TextAlign.center),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(description,style: AppFont.primaryFont.copyWith(
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black
+                ),textAlign: TextAlign.center),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

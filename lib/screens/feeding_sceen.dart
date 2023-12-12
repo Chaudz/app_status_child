@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(FeedingScreen());
@@ -55,8 +56,9 @@ class _FeedingScreenState extends State<FeedingScreen> {
                 children: [
                   SizedBox(
                     child: ElevatedButton(
-                      onPressed: (selectedButton != -1)
-                          ? () async {
+                      onPressed: (selectedButton != -1) ? () async {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool("record", true);
                         Navigator.pushNamed(context, '/loadingData');
                       }
                           : null,

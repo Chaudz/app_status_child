@@ -1,6 +1,10 @@
+import 'dart:io';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
+import "package:shared_preferences/shared_preferences.dart";
 
 class AddBabyScreen extends StatefulWidget {
   const AddBabyScreen({super.key});
@@ -56,6 +60,35 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
   bool isBoy = false;
   DateTime selectedDate = DateTime.now();
   String nameBaby = "";
+  PlatformFile? pickedFile;
+
+  Future uploadFileAndSaveUrl() async {
+    final path = 'file/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    await  ref.putFile(file);
+
+    final urlDowload = await ref.getDownloadURL();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('avatar', urlDowload);
+    return urlDowload;
+  }
+
+  Future selectFile()async{
+    final result = await FilePicker.platform.pickFiles();
+    if(result == null) return;
+
+    setState(() {
+      pickedFile = result.files.first;
+      print(pickedFile);
+    });
+
+    if (pickedFile != null) {
+      await uploadFileAndSaveUrl();
+    }
+  }
 
   Future<void> selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -90,33 +123,52 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Stack(
-                          children: [
-                            ElevatedButton(
-                                onPressed: ()=>{
-
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    padding: EdgeInsets.all(10),
-                                    shape: CircleBorder(),
-                                    backgroundColor: Colors.white
-                                ),
-                                  child: nameBaby != "" ?
-                                  Text(nameBaby![0],style: AppFont.primaryFont.copyWith(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 21,
-                                      color: Colors.green
-                                  ),):
-                                  Image(image: AssetImage("assets/images/icons8-user-30.png"),),
-                            ),
-                            Positioned(
-                                top: 0,
-                                right: 0,
-                                child:  Icon(Icons.camera_alt_rounded)
-                            )
-                          ],
+                        Container(
+                          // height: 150,
+                          // width: 150,
+                          child: Stack(
+                            children: [
+                              ElevatedButton(
+                                  onPressed: selectFile,
+                                  style: ElevatedButton.styleFrom(
+                                      shape: CircleBorder(),
+                                      minimumSize: Size(90, 90),
+                                      backgroundColor: Colors.pinkAccent
+                                  ),
+                                  child: pickedFile != null ?
+                                  Container(
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(999),
+                                      child: Image.file(
+                                          File(pickedFile!.path!),
+                                          width: 90,
+                                          height: 90,
+                                          fit: BoxFit.cover
+                                      ),
+                                    ),
+                                  )
+                                      :
+                                  nameBaby.isNotEmpty? Text(nameBaby[0].toUpperCase(),style: AppFont.primaryFont.copyWith(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white ),) : Text("")
+                              ),
+                              Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: Container(
+                                      padding: EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.black45,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(Icons.camera_alt_sharp,size: 25,color: Colors.white,)
+                                  )
+                              )
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -159,6 +211,16 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
                         label: Text("Thêm tên"),
                       ),
                       cursorColor: Colors.black12,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        nameBaby.trim() == "" ? Text("Tên không được để trống!", style: AppFont.primaryFont.copyWith(
+                            color: Colors.red,
+                            fontSize: 15
+                        )
+                        ): Text(""),
+                      ],
                     ),
                     SizedBox(
                         height: 20
@@ -274,7 +336,13 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
                   children: [
                     SizedBox(width: 10,),
                     ElevatedButton(
-                        onPressed: ()=>{},
+                        onPressed: () async{
+                          if(nameBaby.trim() != ""){
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setBool("record", true);
+                              Navigator.pushNamed(context, '/loadingData');
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.only(top: 5,bottom: 5,left: 40,right: 40),
                             backgroundColor: AppColor.primaryColor

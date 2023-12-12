@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/themes/app_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -10,6 +11,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 1;
+  String? urlAvt;
+
+  Future<void> setUrlAvatar() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      urlAvt = prefs.getString('avatar');
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setUrlAvatar();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +48,19 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.red,
                         borderRadius: BorderRadius.all(Radius.circular(999)),
                       ),
-                      child: Text("D", style: AppFont.primaryFont.copyWith(
+                      child: urlAvt != null ?
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(999),
+                        child: Image.network(
+                              urlAvt!,
+                              width: 50,
+                             height: 50,
+                              fit: BoxFit.cover,),
+                      ) :
+                      Text("D", style: AppFont.primaryFont.copyWith(
                           color: Colors.white
-                      ),),
+                        ),
+                      ),
                     ),
                     SizedBox(
                       width: 5,

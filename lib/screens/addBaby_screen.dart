@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
+import "package:shared_preferences/shared_preferences.dart";
 
 class AddBabyScreen extends StatefulWidget {
   const AddBabyScreen({super.key});
@@ -160,6 +161,16 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
                       ),
                       cursorColor: Colors.black12,
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        nameBaby.trim() == "" ? Text("Tên không được để trống!", style: AppFont.primaryFont.copyWith(
+                            color: Colors.red,
+                            fontSize: 15
+                        )
+                        ): Text(""),
+                      ],
+                    ),
                     SizedBox(
                         height: 20
                     ),
@@ -274,7 +285,13 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
                   children: [
                     SizedBox(width: 10,),
                     ElevatedButton(
-                        onPressed: ()=>{},
+                        onPressed: () async{
+                          if(nameBaby.trim() != ""){
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+                              await prefs.setBool("record", true);
+                              Navigator.pushNamed(context, '/loadingData');
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.only(top: 5,bottom: 5,left: 40,right: 40),
                             backgroundColor: AppColor.primaryColor

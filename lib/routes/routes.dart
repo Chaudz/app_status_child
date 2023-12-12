@@ -1,4 +1,3 @@
-import 'package:myapp/screens/choose_eats_baby_screen.dart';
 import 'package:myapp/screens/choose_info_screen.dart';
 import 'package:myapp/screens/addBaby_screen.dart';
 import 'package:myapp/screens/home_screen.dart';
@@ -22,7 +21,6 @@ var routes = {
   '/addBaby': (context) => AddBabyScreen(),
   '/addBabyDetail': (context) => AddBabyDetail(),
   '/feedingScreen':(context)=> FeedingScreen(),
-  '/chooseEatInfo': (context) => ChooseEatsBabyScreen(),
   '/loadingData': (context) => LoadingSplashScreen(),
   '/homeScreen': (context) => HomeScreen(),
 };

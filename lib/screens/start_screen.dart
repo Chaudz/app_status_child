@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -380,6 +384,40 @@ class AvatarBaby extends StatefulWidget {
 
 class _AvatarBabyState extends State<AvatarBaby> {
   String nameBaby = '';
+  PlatformFile? pickedFile;
+  // UploadTask? uploadTask;
+
+  Future uploadFile() async {
+    print("1111111111111111111111111111");
+    final path = 'file/${pickedFile!.name}';
+    final file = File(pickedFile!.path!);
+
+    final ref = FirebaseStorage.instance.ref().child(path);
+    await  ref.putFile(file);
+
+    final urlDowload = await ref.getDownloadURL();
+    print('Download Link: $urlDowload');
+  }
+
+  Future selectFile()async{
+    final result = await FilePicker.platform.pickFiles();
+    print(result);
+    if(result == null) return;
+
+    setState(() {
+      pickedFile = result.files.first;
+      print("2222222222222222222222222222");
+      print(pickedFile);
+    });
+
+    // if (pickedFile != null) {
+    //   await uploadFile();
+    // }
+    // else{
+    //   print("00000000000000000000000000000000000000000000000000000000000000000000000");
+    // }
+  }
+
 
   void getName() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -421,19 +459,31 @@ class _AvatarBabyState extends State<AvatarBaby> {
                 Stack(
                   children: [
                     ElevatedButton(
-                      onPressed: ()=>{},
+                      onPressed: selectFile,
                       style: ElevatedButton.styleFrom(
                           shape: CircleBorder(),
                           minimumSize: Size(150, 150),
                           backgroundColor: Colors.pinkAccent
                       ),
-                      child: Text(nameBaby.isNotEmpty? nameBaby[0].toUpperCase() : '',style: AppFont.primaryFont.copyWith(
+                      child: pickedFile != null ?
+                     Container(
+                       child: ClipRRect(
+                         borderRadius: BorderRadius.circular(999),
+                         child: Image.file(
+                             File(pickedFile!.path!),
+                             width: 150,
+                             height: 150,
+                             fit: BoxFit.cover
+                         ),
+                       ),
+                     )
+                       :
+                      nameBaby.isNotEmpty? Text(nameBaby[0].toUpperCase(),style: AppFont.primaryFont.copyWith(
                           fontSize: 90,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white
-                      ),
-                      ),
+                          color: Colors.white ),) : Text("")
                     ),
+                    ElevatedButton(onPressed: uploadFile, child: Text('Upload')),
                     Positioned(
                         top: 0,
                         right: 0,

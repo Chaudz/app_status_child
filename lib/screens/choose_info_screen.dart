@@ -52,12 +52,12 @@ class _CreateInfoState extends State<CreateInfo> {
                         ],
                       );
                     },
-                  )),
+                  )
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    child: ElevatedButton(
+                     ElevatedButton(
                       onPressed: (buttonStates.contains(true))
                           ? () async {
                         // Reset button states when navigating back
@@ -83,8 +83,6 @@ class _CreateInfoState extends State<CreateInfo> {
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 60.0), // Khoảng cách bên dưới
                 ],
               ),
             ],

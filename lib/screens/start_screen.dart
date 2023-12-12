@@ -388,7 +388,6 @@ class _AvatarBabyState extends State<AvatarBaby> {
   // UploadTask? uploadTask;
 
   Future uploadFile() async {
-    print("1111111111111111111111111111");
     final path = 'file/${pickedFile!.name}';
     final file = File(pickedFile!.path!);
 
@@ -406,16 +405,12 @@ class _AvatarBabyState extends State<AvatarBaby> {
 
     setState(() {
       pickedFile = result.files.first;
-      print("2222222222222222222222222222");
       print(pickedFile);
     });
 
-    // if (pickedFile != null) {
-    //   await uploadFile();
-    // }
-    // else{
-    //   print("00000000000000000000000000000000000000000000000000000000000000000000000");
-    // }
+    if (pickedFile != null) {
+      await uploadFile();
+    }
   }
 
 
@@ -483,7 +478,6 @@ class _AvatarBabyState extends State<AvatarBaby> {
                           fontWeight: FontWeight.bold,
                           color: Colors.white ),) : Text("")
                     ),
-                    ElevatedButton(onPressed: uploadFile, child: Text('Upload')),
                     Positioned(
                         top: 0,
                         right: 0,

@@ -41,6 +41,9 @@ dependencies:
   firebase_auth: ^4.0.0
   file_picker: ^6.1.1
   firebase_storage: ^11.5.5
+  cloud_firestore: ^4.13.6
+  intl: ^0.19.0
+  connectivity_plus: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -98,6 +101,17 @@ flutter:
      - assets/images/icons8-in-inventory-50.png
      - assets/images/icons8-home-24.png
      - assets/images/icons8-doughnut-chart-64.png
+     - assets/images/icons8-in-inventory-50.png
+     - assets/images/icons8-chart-50.png
+     - assets/images/icons8-control-24.png
+     - assets/images/icons8-shit-48.png
+     - assets/images/icons8-sleep-60.png
+     - assets/images/icons8-water-50.png
+     - assets/images/icons8-oat-milk-48.png
+     - assets/images/icons8-right-30.png
+     - assets/images/icons8-pause-24.png
+     - assets/images/icons8-square-50.png
+     - assets/images/icons8-error-64.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

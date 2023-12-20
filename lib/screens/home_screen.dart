@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/screens/homepage_screen.dart';
+import 'package:myapp/screens/layouts/header.dart';
+import 'package:myapp/screens/record_screen.dart';
+import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,22 +14,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 1;
-  String? urlAvt;
+  int _currentIndex = 0;
 
-  Future<void> setUrlAvatar() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      urlAvt = prefs.getString('avatar');
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    setUrlAvatar();
-  }
+  final List<Widget> _screens = [
+    HomePageScreen(),
+    RecordScreen(),
+    // StatisticsScreen(),
+    // OverviewScreen(),
+    // AccountScreen()
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -33,76 +30,8 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.only(top: 40, left: 20, right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.all(Radius.circular(999)),
-                      ),
-                      child: urlAvt != null ?
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(999),
-                        child: Image.network(
-                              urlAvt!,
-                              width: 50,
-                             height: 50,
-                              fit: BoxFit.cover,),
-                      ) :
-                      Text("D", style: AppFont.primaryFont.copyWith(
-                          color: Colors.white
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('D', style: AppFont.primaryFont.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600
-                        ),),
-                        Text("1 ngày", style: AppFont.primaryFont.copyWith(
-                          color: Colors.black12,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600
-                        ),)
-                      ],
-                    )
-                  ],
-                ),
-                TextButton(
-                  onPressed: () {
-                    // Handle button press
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                  ),
-                  child: Container(
-                    height: 20,
-                    width: 20,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage("assets/images/icons8-no-reminders-50.png"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                )
-
-              ],
-            ),
-          )
+          Header(),
+          _screens[_currentIndex]
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -115,20 +44,32 @@ class _HomeScreenState extends State<HomeScreen> {
         items: [
           BottomNavigationBarItem(
             label: 'Trang chủ',
-            icon: Icon(Icons.home),
+            icon: Image(image: AssetImage('assets/images/icons8-home-24.png'),width: 20, height: 20,color: AppColor.grayColor),
+          ),
+          BottomNavigationBarItem(
+            label: "Bản ghi",
+            icon: Image(image: AssetImage('assets/images/icons8-in-inventory-50.png'),width: 20, height: 20,color: AppColor.grayColor),
           ),
           BottomNavigationBarItem(
             label: "Thống kê",
-            icon: Icon(Icons.pivot_table_chart),
+            icon: Image(image: AssetImage('assets/images/icons8-chart-50.png'),width: 20, height: 20,),
           ),
           BottomNavigationBarItem(
             label: "Tổng quan",
-            icon: Image(image: AssetImage('assets/images/girl-icon.png'),width: 20, height: 20,),
+            icon: Image(image: AssetImage('assets/images/icons8-doughnut-chart-64.png'),width: 20, height: 20,),
+          ),
+          BottomNavigationBarItem(
+            label: "Tài khoản",
+            icon: Image(image: AssetImage('assets/images/icons8-user-30.png'),width: 20, height: 20,),
           ),
         ],
+        selectedItemColor:  AppColor.secondColor,
+        unselectedItemColor: Colors.blue,
         showSelectedLabels: true, // Ẩn label khi được chọn
         showUnselectedLabels: false, // Ẩn label khi không được chọn
       ),
     );
   }
 }
+
+

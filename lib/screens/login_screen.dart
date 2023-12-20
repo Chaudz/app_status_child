@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/services/auth_service.dart';
 import 'package:myapp/themes/app_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -55,12 +58,77 @@ class LoginScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                     onPressed: ()async {
+                      print('dddddddddddddddd');
+                      var connectivityResult = await Connectivity().checkConnectivity();
+
+                      print('ccccccccccccccccccccccccccc');
+                      if (connectivityResult == ConnectivityResult.none) {
+                        // Không có kết nối mạng
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text(
+                                "Lỗi",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red, // Màu sắc của tiêu đề
+                                ),
+                              ),
+                              content: Text(
+                                "Không có kết nối mạng. Vui lòng kiểm tra kết nối của bạn.",
+                                style: TextStyle(
+                                  color: Colors.black, // Màu sắc của nội dung
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: Text(
+                                    "Đóng",
+                                    style: TextStyle(
+                                      color: Colors.blue, // Màu sắc của nút
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Đóng dialog
+                                  },
+                                ),
+                              ],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0), // Độ cong của các góc
+                              ),
+                              backgroundColor: Colors.white, // Màu nền của dialog
+                              elevation: 5, // Độ nâng của dialog
+                            );
+                          },
+                        );
+                        return;
+                      }
+
                       User? user = await AuthService().signInWithGoogle();
                       if (user != null) {
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        try {
+                          var users = FirebaseFirestore.instance.collection('Users');
+                          QuerySnapshot querySnapshot = await users.where('email', isEqualTo: user.email).get();
+
+                          if (querySnapshot.docs.isNotEmpty) {
+                            String existingUserId = querySnapshot.docs.first.id;
+                            prefs.setString('userId', existingUserId);
+                          } else {
+                            // Email chưa tồn tại, thêm mới dữ liệu
+                            DocumentReference userRef = await users.add({
+                              'name': user.displayName,
+                              'email': user.email,
+                            });
+                            // Lấy ID của tài liệu vừa được thêm
+                            String documentId = userRef.id;
+                            prefs.setString('userId', documentId);
+                          }
+                        } catch (e) {
+                          print("Lỗi: $e");
+                        }
                         Navigator.pushNamedAndRemoveUntil(context,'/addBaby', (route)=> false );
-                        print("User signed in: ${user.displayName}");
-                        print("User email: ${user.photoURL}");
-                        // In ra các thông tin khác của user nếu cần
                       } else {
                         print("Google sign-in failed.");
                       }

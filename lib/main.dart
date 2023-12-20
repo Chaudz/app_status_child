@@ -49,8 +49,6 @@ class _MyAppState extends State<MyApp> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             bool record = snapshot.data ?? false;
-            print("++++++++$record");
-            print(record);
             return MaterialApp(
               debugShowCheckedModeBanner: false,
               theme: ThemeData(

@@ -44,6 +44,7 @@ dependencies:
   cloud_firestore: ^4.13.6
   intl: ^0.19.0
   connectivity_plus: ^5.0.2
+  fl_chart: ^0.63.0
 
 dev_dependencies:
   flutter_test:
@@ -112,6 +113,7 @@ flutter:
      - assets/images/icons8-pause-24.png
      - assets/images/icons8-square-50.png
      - assets/images/icons8-error-64.png
+     - assets/images/icons8-trash-50.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -132,6 +134,10 @@ flutter:
      - family: Playfair
        fonts:
          - asset: assets/fonts/PlayfairDisplay-Italic.ttf
+           weight: 700
+     - family: Rubik
+       fonts:
+         - asset: assets/fonts/RubikDoodleShadow-Regular.ttf
            weight: 700
   #
   # For details regarding fonts from package dependencies,

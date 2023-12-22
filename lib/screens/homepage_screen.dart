@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:myapp/screens/layouts/header.dart';
 import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,70 +26,68 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 20, right: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Bảng điều khiển",style: AppFont.primaryFont.copyWith(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w600
-                ),
-                ),
-                TextButton(
-                    onPressed: (){},
-                    child: Image(image: AssetImage('assets/images/icons8-control-24.png'),width: 20,height: 20,fit: BoxFit.cover,)
-                )
-              ],
-            ),
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 5.0, bottom: 5.0, left: 20, right: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Bảng điều khiển",style: AppFont.primaryFont.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w600
+              ),
+              ),
+              TextButton(
+                  onPressed: (){},
+                  child: Image(image: AssetImage('assets/images/icons8-control-24.png'),width: 20,height: 20,fit: BoxFit.cover,)
+              )
+            ],
           ),
-          ButtonsActive(),
-          Container(
-            height: 5,
-            width: double.infinity,
-            color: Colors.black12,
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child:   Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text('Hôm nay', style: AppFont.primaryFont.copyWith(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600
-                    ),),
-                    TextButton(
-                        onPressed: (){},
-                        child: Image(image: AssetImage('assets/images/icons8-control-24.png'),width: 20,height: 20,fit: BoxFit.cover,)
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    StreamBuilder(
-                        stream: firestore.collection('actives').snapshots(),
-                        builder:  (context,snapshot){
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
-
-                          return buildWidgetFromSnapshot(snapshot);
+        ),
+        ButtonsActive(),
+        Container(
+          height: 5,
+          width: double.infinity,
+          color: Colors.black12,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 20, right: 20),
+          child:   Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Hôm nay', style: AppFont.primaryFont.copyWith(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600
+                  ),),
+                  TextButton(
+                      onPressed: (){},
+                      child: Image(image: AssetImage('assets/images/icons8-control-24.png'),width: 20,height: 20,fit: BoxFit.cover,)
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  StreamBuilder(
+                      stream: firestore.collection('actives').snapshots(),
+                      builder:  (context,snapshot){
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
                         }
-                    ),
-                  ],
-                )
-              ],
-            ),
 
+                        return buildWidgetFromSnapshot(snapshot);
+                      }
+                  ),
+                ],
+              )
+            ],
           ),
-        ],
-      ),
+
+        ),
+      ],
     );
   }
 }
@@ -98,7 +95,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
 Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot){
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<int> countDocumentsWithId(String name, String userId) async {
+  Future<int> countDocumentsWithId(String name, String kidId) async {
     DateTime now = DateTime.now();
     DateTime startOfDay = DateTime(now.year, now.month, now.day);
     DateTime endOfDay = DateTime(now.year, now.month, now.day, 23, 59, 59); // Kết thúc ngày
@@ -106,7 +103,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
     QuerySnapshot querySnapshot = await firestore
         .collection('actives')
         .where('name', isEqualTo: name)
-        .where('userId', isEqualTo: 'Op6DE7c6bZnuioUKzWqq')
+        .where('kidId', isEqualTo: kidId)
         .where('startTime', isGreaterThanOrEqualTo: startOfDay)
         .where('startTime', isLessThanOrEqualTo: endOfDay)
         .get();
@@ -114,16 +111,16 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
     return querySnapshot.size;
   }
 
-  Future<String?> getUserId() async {
+  Future<String?> getKidId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString('userId');
+    return prefs.getString('kidId');
   }
 
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       FutureBuilder<String?>(
-        future: getUserId(),
+        future: getKidId(),
         builder: (context, userIdSnapshot) {
           String? userId = userIdSnapshot.data;
           return FutureBuilder<int>(
@@ -157,7 +154,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
         height: 10
       ),
       FutureBuilder<String?>(
-        future: getUserId(),
+        future: getKidId(),
         builder: (context, userIdSnapshot) {
           String? userId = userIdSnapshot.data;
           return FutureBuilder<int>(
@@ -191,7 +188,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           height: 10
       ),
       FutureBuilder<String?>(
-        future: getUserId(),
+        future: getKidId(),
         builder: (context, userIdSnapshot) {
           String? userId = userIdSnapshot.data;
           return FutureBuilder<int>(
@@ -225,7 +222,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           height: 10
       ),
       FutureBuilder<String?>(
-        future: getUserId(),
+        future: getKidId(),
         builder: (context, userIdSnapshot) {
           String? userId = userIdSnapshot.data;
           return FutureBuilder<int>(
@@ -259,7 +256,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           height: 10
       ),
       FutureBuilder<String?>(
-        future: getUserId(),
+        future: getKidId(),
         builder: (context, userIdSnapshot) {
           String? userId = userIdSnapshot.data;
           return FutureBuilder<int>(
@@ -359,14 +356,15 @@ class _ActiveTimeState extends State<ActiveTime> {
   void saveRecord() async{
     CollectionReference actives = FirebaseFirestore.instance.collection('actives');
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = await prefs.getString('userId');
+    String? kidId = await prefs.getString('kidId');
 
     actives.add({
       'name': widget.activeName,
       'startTime':startTime,
       'endTime': DateTime.now(),
       'seconds':  elapsedTimeInSeconds,
-      'userId': userId ?? ''
+      'kidId': kidId ?? '',
+      'urlImg': widget.urlImage
     })
         .then((value) {
           print("User Added==============================");

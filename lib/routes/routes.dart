@@ -5,6 +5,7 @@ import 'package:myapp/screens/home_screen.dart';
 import 'package:myapp/screens/loading_splash_screen.dart';
 import 'package:myapp/screens/login_screen.dart';
 import 'package:myapp/screens/onboarding_screen.dart';
+import 'package:myapp/screens/proflie_screen.dart';
 import 'package:myapp/screens/splash_screen.dart';
 import 'package:myapp/screens/start_screen.dart';
 import 'package:myapp/screens/feeding_sceen.dart';
@@ -18,11 +19,12 @@ var routes = {
   '/nameBaby': (context) => NameBaby(),
   '/birthdayBaby': (context) => BirthdayBaby(),
   '/avatarBaby': (context) => AvatarBaby(),
-  '/createInfo':(context)=> CreateInfo(),
+  '/createInfo': (context) => CreateInfo(),
   '/addBaby': (context) => AddBabyScreen(),
   '/addBabyDetail': (context) => AddBabyDetail(),
-  '/feedingScreen':(context)=> FeedingScreen(),
+  '/feedingScreen': (context) => FeedingScreen(),
   '/chooseEatInfo': (context) => ChooseEatsBabyScreen(),
   '/loadingData': (context) => LoadingSplashScreen(),
   '/homeScreen': (context) => HomeScreen(),
+  '/profileScreen': (context) => ProfileScreen(),
 };

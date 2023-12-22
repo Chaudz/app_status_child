@@ -37,22 +37,22 @@ class _CreateInfoState extends State<CreateInfo> {
               titleOne,
               Flexible(
                   child: ListView.builder(
-                    itemCount: data.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var titleSection = data[index];
-                      return Column(
-                        children: [
-                          TitleSectionContent(
-                            image: titleSection.image,
-                            title: titleSection.title,
-                            setBtn: () => {setButton(index)},
-                            isSelected: buttonStates[index],
-                          ),
-                          SizedBox(height: 30.0),
-                        ],
-                      );
-                    },
-                  )),
+                itemCount: data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var titleSection = data[index];
+                  return Column(
+                    children: [
+                      TitleSectionContent(
+                        image: titleSection.image,
+                        title: titleSection.title,
+                        setBtn: () => {setButton(index)},
+                        isSelected: buttonStates[index],
+                      ),
+                      SizedBox(height: 30.0),
+                    ],
+                  );
+                },
+              )),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -60,17 +60,16 @@ class _CreateInfoState extends State<CreateInfo> {
                     child: ElevatedButton(
                       onPressed: (buttonStates.contains(true))
                           ? () async {
-                        // Reset button states when navigating back
-                        setState(() {
-                          buttonStates = [false, false, false, false];
-                        });
-                        Navigator.pushNamed(
-                            context, '/feedingScreen');
-                      }
+                              // Reset button states when navigating back
+                              setState(() {
+                                buttonStates = [false, false, false, false];
+                              });
+                              Navigator.pushNamed(context, '/feedingScreen');
+                            }
                           : null,
                       style: ElevatedButton.styleFrom(
-                          padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 30),
                           backgroundColor: Colors.pinkAccent,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(40.0))),
@@ -79,8 +78,7 @@ class _CreateInfoState extends State<CreateInfo> {
                         style: AppFont.primaryFont.copyWith(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
-                            color: Colors.white
-                        ),
+                            color: Colors.white),
                       ),
                     ),
                   ),
@@ -133,10 +131,8 @@ Widget titleOne = new Container(
           children: [
             Container(
               child: Text('Đánh dấu mục tiêu của bạn',
-                  style: AppFont.primaryFont.copyWith(
-                      fontSize: 30,
-                    fontWeight: FontWeight.bold
-                  )),
+                  style: AppFont.primaryFont
+                      .copyWith(fontSize: 30, fontWeight: FontWeight.bold)),
               padding: EdgeInsets.only(bottom: 10.0),
             ),
             Text(
@@ -174,9 +170,7 @@ class TitleSectionContent extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(10.0),
           decoration: BoxDecoration(
-            color: isSelected
-                ? Colors.grey[500]
-                : Colors.black12,
+            color: isSelected ? Colors.grey[500] : Colors.black12,
             borderRadius: BorderRadius.circular(40.0),
           ),
           child: Row(

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
   DateTime selectedDate = DateTime.now();
   String nameBaby = "";
   PlatformFile? pickedFile;
+  String urlAvatar = "";
 
   Future uploadFileAndSaveUrl() async {
     final path = 'file/${pickedFile!.name}';
@@ -70,9 +72,10 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
     await  ref.putFile(file);
 
     final urlDowload = await ref.getDownloadURL();
+    setState(() {
+      urlAvatar =  urlDowload;
+    });
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('avatar', urlDowload);
     return urlDowload;
   }
 
@@ -81,8 +84,7 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
     if(result == null) return;
 
     setState(() {
-      pickedFile = result.files.first;
-      print(pickedFile);
+       pickedFile = result.files.first;
     });
 
     if (pickedFile != null) {
@@ -102,6 +104,31 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
         selectedDate = picked;
       });
   }
+
+  Future<void> saveKidData() async {
+    try {
+      await uploadFileAndSaveUrl();
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      String? userId = await prefs.getString('userId');
+
+      // Thêm dữ liệu vào collection "Kids"
+      DocumentReference newKid = await firestore.collection('Kids').add({
+        'name': nameBaby.trim(),
+        'birthday': selectedDate,
+        'gender': isBoy ? 'boy' : 'girl',
+        'userId': userId,
+        'urlAvatar': urlAvatar, // Sử dụng giá trị urlAvatar đã cập nhật
+      });
+
+      await prefs.setBool("record", true); // để xác nhận đã tạo hồ sơ
+      await prefs.setString('kidId', newKid.id); // lưu id của kid đầu tiên
+      Navigator.pushNamed(context, '/loadingData');
+    } catch (e) {
+      print('Lỗi khi lưu dữ liệu em bé: $e');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -336,16 +363,11 @@ class _AddBabyDetailState extends State<AddBabyDetail> {
                   children: [
                     SizedBox(width: 10,),
                     ElevatedButton(
-                        onPressed: () async{
-                          if(nameBaby.trim() != ""){
-                              SharedPreferences prefs = await SharedPreferences.getInstance();
-                              await prefs.setBool("record", true);
-                              Navigator.pushNamed(context, '/loadingData');
-                          }
-                        },
+                        onPressed: nameBaby.trim().isNotEmpty
+                            ?saveKidData : null,
                         style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.only(top: 5,bottom: 5,left: 40,right: 40),
-                            backgroundColor: AppColor.primaryColor
+                          padding: EdgeInsets.only(top: 5,bottom: 5,left: 40,right: 40),
+                          backgroundColor: AppColor.primaryColor,
                         ),
                         child: Text("Lưu",style: AppFont.primaryFont.copyWith(
                           fontSize: 15,

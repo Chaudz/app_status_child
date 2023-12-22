@@ -1,29 +1,53 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../themes/app_fonts.dart';
 
 class Header extends StatefulWidget {
-  const Header({super.key});
+  final String name;
+  const Header({super.key, required this.name});
 
   @override
   State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
-  String? urlAvt;
-
-  Future<void> setUrlAvatar() async {
+  Future<String?> setUrlAvatar() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      urlAvt = prefs.getString('avatar');
-    });
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      String? kidId = prefs.getString('kidId');
+
+      if (kidId != null) {
+        // Thực hiện truy vấn để lấy URL avatar từ Firestore
+        DocumentSnapshot kidSnapshot = await firestore.collection('Kids').doc(kidId).get();
+
+        // Kiểm tra xem tài liệu có tồn tại không
+        if (kidSnapshot.exists) {
+          String? urlAvatar = kidSnapshot['urlAvatar'];
+          return urlAvatar;
+        } else {
+          // Xử lý khi không tìm thấy tài liệu
+          print('Không tìm thấy tài liệu với ID $kidId trong collection "kids"');
+        }
+      } else {
+        // Xử lý khi kidId là null
+        print('Không có kidId trong SharedPreferences');
+      }
+    } catch (e) {
+      // Xử lý lỗi
+      print('Lỗi khi lấy URL avatar từ Firestore: $e');
+    }
+
+    // Trả về null nếu có lỗi hoặc không tìm thấy URL avatar
+    return null;
   }
 
   @override
   void initState() {
     // TODO: implement initState
-    setUrlAvatar();
     super.initState();
   }
 
@@ -46,19 +70,25 @@ class _HeaderState extends State<Header> {
                       color: Colors.red,
                       borderRadius: BorderRadius.all(Radius.circular(999)),
                     ),
-                    child: urlAvt != null ?
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(999),
-                      child: Image.network(
-                        urlAvt!,
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,),
-                    ) :
-                    Text("D", style: AppFont.primaryFont.copyWith(
-                        color: Colors.white
-                    ),
-                    ),
+                    child: FutureBuilder(
+                      future: setUrlAvatar(),
+                      builder: (context,snapshot){
+                        String? urlAvt = snapshot.data;
+                        return urlAvt != null ?
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(999),
+                          child: Image.network(
+                            urlAvt!,
+                            width: 50,
+                            height: 50,
+                            fit: BoxFit.cover,),
+                        ) :
+                        Text("D", style: AppFont.primaryFont.copyWith(
+                            color: Colors.white
+                        ),
+                        );
+                      }
+                    )
                   ),
                   SizedBox(
                     width: 5,
@@ -66,11 +96,14 @@ class _HeaderState extends State<Header> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('D', style: AppFont.primaryFont.copyWith(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600
-                      ),),
-                      Text("1 ngày", style: AppFont.primaryFont.copyWith(
+                    Text(
+                    widget.name,
+                    style: AppFont.primaryFont.copyWith(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                      Text("kid", style: AppFont.primaryFont.copyWith(
                           color: Colors.black12,
                           fontSize: 15,
                           fontWeight: FontWeight.w600

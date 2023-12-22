@@ -6,8 +6,15 @@ import 'package:myapp/themes/app_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  bool hasSavedData = false;
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +55,15 @@ class LoginScreen extends StatelessWidget {
                 SizedBox(height: 80),
                 Text(
                   'Ứng dụng của chúng tôi hoàn toàn ẩn danh khi sử dụng và không yêu cầu đăng '
-                      'ký bằng tên thật của bạn. Tất cả dữ liệu của bạn trong ứng dụng sẽ không và'
-                      ' không thể được sử dụng để nhận dạng danh tính',
+                  'ký bằng tên thật của bạn. Tất cả dữ liệu của bạn trong ứng dụng sẽ không và'
+                  ' không thể được sử dụng để nhận dạng danh tính',
                   style: AppFont.primaryFont.copyWith(fontSize: 15),
                 ),
                 SizedBox(height: 60),
                 ElevatedButton(
                   onPressed: () async {
-                    var connectivityResult = await Connectivity().checkConnectivity();
+                    var connectivityResult =
+                        await Connectivity().checkConnectivity();
                     if (connectivityResult == ConnectivityResult.none) {
                       _showNoInternetDialog(context);
                       return;
@@ -64,16 +72,26 @@ class LoginScreen extends StatelessWidget {
                     User? user = await AuthService().signInWithGoogle();
 
                     if (user != null) {
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      String email = user.email!;
-                      String name = user.displayName!;
-                      String userId = await _getOrCreateUserId(email,name, prefs);
+                      if (!hasSavedData) {
+                        // tránh tạo nhiê tài khoản giống nhau
+                        setState(() {
+                          hasSavedData = true;
+                        });
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+                        String email = user.email!;
+                        String name = user.displayName!;
+                        String userId =
+                            await _getOrCreateUserId(email, name, prefs);
 
-                      String kidId = await _getOrCreateKidId(userId);
+                        String kidId = await _getOrCreateKidId(userId);
 
-                      String route = kidId.isNotEmpty ? '/loadingData' : '/addBaby';
+                        String route =
+                            kidId.isNotEmpty ? '/loadingData' : '/addBaby';
 
-                      Navigator.pushNamedAndRemoveUntil(context, route, (route) => false);
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, route, (route) => false);
+                      }
                     } else {
                       print("Google sign-in failed.");
                     }
@@ -82,7 +100,8 @@ class LoginScreen extends StatelessWidget {
                     padding: EdgeInsets.all(15),
                     backgroundColor: Color(0xFFFFFFFF),
                     side: BorderSide(width: 1, color: Colors.black12),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
                   ),
                   child: Row(
                     children: [
@@ -96,7 +115,8 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 15),
-                      Text('Tiếp tục với Google', style: AppFont.primaryFont.copyWith(fontSize: 15)),
+                      Text('Tiếp tục với Google',
+                          style: AppFont.primaryFont.copyWith(fontSize: 15)),
                     ],
                   ),
                 ),
@@ -110,11 +130,13 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
-  Future<String> _getOrCreateUserId(String email,String name, SharedPreferences prefs) async {
+  Future<String> _getOrCreateUserId(
+      String email, String name, SharedPreferences prefs) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     CollectionReference users = firestore.collection('Users');
 
-    QuerySnapshot querySnapshot = await users.where('email', isEqualTo: email).get();
+    QuerySnapshot querySnapshot =
+        await users.where('email', isEqualTo: email).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       String existingUserId = querySnapshot.docs.first.id;
@@ -136,7 +158,10 @@ class LoginScreen extends StatelessWidget {
   Future<String> _getOrCreateKidId(String userId) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    QuerySnapshot existUser = await firestore.collection('Kids').where('userId', isEqualTo: userId).get();
+    QuerySnapshot existUser = await firestore
+        .collection('Kids')
+        .where('userId', isEqualTo: userId)
+        .get();
 
     if (existUser.docs.isNotEmpty) {
       String kidId = existUser.docs.first.id;
@@ -161,14 +186,16 @@ class LoginScreen extends StatelessWidget {
           onTap: () async {},
           child: Text(
             'Điều khoản dịch vụ',
-            style: AppFont.primaryFont.copyWith(fontSize: 15, decoration: TextDecoration.underline),
+            style: AppFont.primaryFont
+                .copyWith(fontSize: 15, decoration: TextDecoration.underline),
           ),
         ),
         GestureDetector(
           onTap: () => {},
           child: Text(
             'Chính sách bảo mật',
-            style: AppFont.primaryFont.copyWith(fontSize: 15, decoration: TextDecoration.underline),
+            style: AppFont.primaryFont
+                .copyWith(fontSize: 15, decoration: TextDecoration.underline),
           ),
         ),
       ],

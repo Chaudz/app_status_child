@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,11 +22,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
-
   }
 
   Future<List<bool>> getRecord() async {
@@ -61,7 +58,9 @@ class _MyAppState extends State<MyApp> {
               ),
               initialRoute: (FirebaseAuth.instance.currentUser != null)
                   ? (record || existsKid ? '/loadingData' : '/addBaby')
-                  : (record) ? '/loadingData': '/home',
+                  : (record)
+                      ? '/loadingData'
+                      : '/home',
               routes: routes,
             );
           } else {

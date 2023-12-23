@@ -114,6 +114,7 @@ flutter:
      - assets/images/icons8-square-50.png
      - assets/images/icons8-error-64.png
      - assets/images/icons8-trash-50.png
+     - assets/images/thiep-chuc-giang-sinh-online.gif
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

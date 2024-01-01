@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/themes/app_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,15 +58,40 @@ class _FeedingScreenState extends State<FeedingScreen> {
                 children: [
                   SizedBox(
                     child: ElevatedButton(
-                      onPressed: (selectedButton != -1) ? () async {
-                        SharedPreferences prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool("record", true);
-                        Navigator.pushNamed(context, '/loadingData');
-                      }
+                      onPressed: (selectedButton != -1)
+                          ? () async {
+                              FirebaseFirestore firestore = await FirebaseFirestore.instance;
+                              CollectionReference users = await firestore.collection('Users');
+                              SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                              String? nameBaby = await prefs.getString("nameBaby");
+                              String birthdayBaby = await prefs.getString("birthdayBaby") ?? '';
+                              DateTime dateBirthday =
+                                  DateFormat("yyyy-MM-dd HH:mm:ss.SSS").parse(birthdayBaby);
+                              String? genderBaby = await prefs.getString("genderBaby");
+                              String urlAvt = await prefs.getString("avatar") ?? '';
+                              print("ooooooooooooooooooooooooo");
+                              print("$nameBaby $dateBirthday $genderBaby $urlAvt");
+                              DocumentReference userRef = await users.add({
+                                'name': '',
+                                'email': '',
+                              });
+                              String documentId = await userRef.id;
+                              await prefs.setString('userId', documentId);
+                              DocumentReference newKid = await firestore.collection('Kids').add({
+                                'name': nameBaby,
+                                'birthday': dateBirthday,
+                                'gender': genderBaby,
+                                'userId': documentId,
+                                'urlAvatar': urlAvt, // Sử dụng giá trị urlAvatar đã cập nhật
+                              });
+                              await prefs.setBool("record", true);
+                              await prefs.setString('kidId', newKid.id);
+                              Navigator.pushNamed(context, '/loadingData');
+                            }
                           : null,
                       style: ElevatedButton.styleFrom(
-                        padding:
-                        EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+                        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                         backgroundColor: Colors.pinkAccent,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40.0),
@@ -125,10 +152,7 @@ Widget titleOne = new Container(
           children: [
             Container(
               child: Text('Chỉ định loại nuôi con',
-                  style: AppFont.primaryFont.copyWith(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30
-                  )),
+                  style: AppFont.primaryFont.copyWith(fontWeight: FontWeight.bold, fontSize: 30)),
               padding: EdgeInsets.only(bottom: 10.0),
             ),
           ],
@@ -171,7 +195,6 @@ class TitleSectionContent extends StatelessWidget {
               SizedBox(width: 60.0),
               Expanded(
                 child: Text(
-
                   title,
                   style: TextStyle(
                     fontSize: 20.0,

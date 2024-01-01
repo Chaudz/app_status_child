@@ -8,9 +8,10 @@ class Active {
   final int? endMinute;
   final String? activeId;
   final Function onDelete;
+  final int? seconds;
 
-  Active(this.name, this.urlImg, this.date, this.startHour, this.startMinute,
-      this.activeId, this.onDelete, this.endHour, this.endMinute);
+  Active(this.name, this.urlImg, this.date, this.startHour, this.startMinute, this.activeId,
+      this.onDelete, this.endHour, this.endMinute, this.seconds);
 
   String? getActiveId() => activeId;
   String? getName() => name;
@@ -20,5 +21,6 @@ class Active {
   int? getStartMinute() => startMinute;
   int? getEndHour() => endHour;
   int? getEndMinute() => endMinute;
+  int? getSeconds() => seconds;
   Function getDelete() => onDelete;
 }

@@ -1,6 +1,6 @@
 # myapp
 
-A new Flutter project.
+TomTracker APP
 
 ## Getting Started
 

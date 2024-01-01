@@ -1,14 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/screens/dashboard_screen.dart';
 import 'package:myapp/screens/homepage_screen.dart';
 import 'package:myapp/screens/layouts/header.dart';
 import 'package:myapp/screens/record_screen.dart';
+import 'package:myapp/screens/record_setting_screen.dart';
 import 'package:myapp/screens/stats_screen.dart';
 import 'package:myapp/themes/app_colors.dart';
-import 'package:myapp/themes/app_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,8 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
     HomePageScreen(),
     RecordScreen(),
     StatsScreen(),
-    DashBoardScreen()
-    // AccountScreen()
+    DashBoardScreen(),
+    RecordSettingScreen()
   ];
 
   Future<String?> _getKidName() async {

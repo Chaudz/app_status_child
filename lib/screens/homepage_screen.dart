@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:myapp/screens/placeholder_screen.dart';
 import 'package:myapp/themes/app_colors.dart';
 import 'package:myapp/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +20,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
-  void initState(){
+  void initState() {
     // TODO: implement initState
     super.initState();
   }
@@ -33,14 +34,28 @@ class _HomePageScreenState extends State<HomePageScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Bảng điều khiển",style: AppFont.primaryFont.copyWith(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600
+              Text(
+                "Bảng điều khiển",
+                style: AppFont.primaryFont.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
               ),
-              ),
-              TextButton(
-                  onPressed: (){},
-                  child: Image(image: AssetImage('assets/images/icons8-control-24.png'),width: 20,height: 20,fit: BoxFit.cover,)
+              Container(
+                height: 40,
+                width: 40,
+                child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return PlaceHolderScreen();
+                        },
+                      );
+                    },
+                    child: Image(
+                      image: AssetImage('assets/images/icons8-control-24.png'),
+                      width: 20,
+                      height: 20,
+                      fit: BoxFit.cover,
+                    )),
               )
             ],
           ),
@@ -53,18 +68,33 @@ class _HomePageScreenState extends State<HomePageScreen> {
         ),
         Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
-          child:   Column(
+          child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Hôm nay', style: AppFont.primaryFont.copyWith(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600
-                  ),),
-                  TextButton(
-                      onPressed: (){},
-                      child: Image(image: AssetImage('assets/images/icons8-control-24.png'),width: 20,height: 20,fit: BoxFit.cover,)
+                  Text(
+                    'Hôm nay',
+                    style: AppFont.primaryFont.copyWith(fontSize: 15, fontWeight: FontWeight.w600),
+                  ),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    child: TextButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return PlaceHolderScreen();
+                            },
+                          );
+                        },
+                        child: Image(
+                          image: AssetImage('assets/images/icons8-control-24.png'),
+                          width: 20,
+                          height: 20,
+                          fit: BoxFit.cover,
+                        )),
                   )
                 ],
               ),
@@ -73,26 +103,24 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 children: [
                   StreamBuilder(
                       stream: firestore.collection('actives').snapshots(),
-                      builder:  (context,snapshot){
+                      builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         }
 
                         return buildWidgetFromSnapshot(snapshot);
-                      }
-                  ),
+                      }),
                 ],
               )
             ],
           ),
-
         ),
       ],
     );
   }
 }
 
-Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot){
+Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<int> countDocumentsWithId(String name, String kidId) async {
@@ -136,13 +164,28 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image(image: AssetImage(AppConstants.SLEEPING_IMG),width: 30,height: 30,fit: BoxFit.cover,),
-                        SizedBox(width: 10,),
-                        Text(AppConstants.SLEEPING, style: AppFont.fontActives,),
+                        Image(
+                          image: AssetImage(AppConstants.SLEEPING_IMG),
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          AppConstants.SLEEPING,
+                          style: AppFont.fontActives,
+                        ),
                       ],
                     ),
-                    SizedBox(width: 40,),
-                    Text('$sleepCount',style: AppFont.fontActivesCount,)
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text(
+                      '$sleepCount',
+                      style: AppFont.fontActivesCount,
+                    )
                   ],
                 ),
               );
@@ -150,9 +193,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           );
         },
       ),
-      SizedBox(
-        height: 10
-      ),
+      SizedBox(height: 10),
       FutureBuilder<String?>(
         future: getKidId(),
         builder: (context, userIdSnapshot) {
@@ -170,13 +211,28 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image(image: AssetImage(AppConstants.BOTTLE_FEEDING_IMG),width: 30,height: 30,fit: BoxFit.cover,),
-                        SizedBox(width: 10,),
-                        Text(AppConstants.BOTTLE_FEEDING, style: AppFont.fontActives,),
+                        Image(
+                          image: AssetImage(AppConstants.BOTTLE_FEEDING_IMG),
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          AppConstants.BOTTLE_FEEDING,
+                          style: AppFont.fontActives,
+                        ),
                       ],
                     ),
-                    SizedBox(width: 40,),
-                    Text('$drinkBollteMilkCount',style: AppFont.fontActivesCount,)
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text(
+                      '$drinkBollteMilkCount',
+                      style: AppFont.fontActivesCount,
+                    )
                   ],
                 ),
               );
@@ -184,9 +240,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           );
         },
       ),
-      SizedBox(
-          height: 10
-      ),
+      SizedBox(height: 10),
       FutureBuilder<String?>(
         future: getKidId(),
         builder: (context, userIdSnapshot) {
@@ -204,13 +258,28 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image(image: AssetImage(AppConstants.URINATION_IMG),width: 30,height: 30,fit: BoxFit.cover,),
-                        SizedBox(width: 10,),
-                        Text(AppConstants.URINATION, style: AppFont.fontActives,),
+                        Image(
+                          image: AssetImage(AppConstants.URINATION_IMG),
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          AppConstants.URINATION,
+                          style: AppFont.fontActives,
+                        ),
                       ],
                     ),
-                    SizedBox(width: 40,),
-                    Text('$urinationCount',style: AppFont.fontActivesCount,)
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text(
+                      '$urinationCount',
+                      style: AppFont.fontActivesCount,
+                    )
                   ],
                 ),
               );
@@ -218,9 +287,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           );
         },
       ),
-      SizedBox(
-          height: 10
-      ),
+      SizedBox(height: 10),
       FutureBuilder<String?>(
         future: getKidId(),
         builder: (context, userIdSnapshot) {
@@ -238,13 +305,28 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image(image: AssetImage(AppConstants.BOWEL_MOVEMENT_IMG),width: 30,height: 30,fit: BoxFit.cover,),
-                        SizedBox(width: 10,),
-                        Text(AppConstants.BOWEL_MOVEMENT, style: AppFont.fontActives,),
+                        Image(
+                          image: AssetImage(AppConstants.BOWEL_MOVEMENT_IMG),
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          AppConstants.BOWEL_MOVEMENT,
+                          style: AppFont.fontActives,
+                        ),
                       ],
                     ),
-                    SizedBox(width: 40,),
-                    Text('$bowelMovementCount',style: AppFont.fontActivesCount,)
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text(
+                      '$bowelMovementCount',
+                      style: AppFont.fontActivesCount,
+                    )
                   ],
                 ),
               );
@@ -252,9 +334,7 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           );
         },
       ),
-      SizedBox(
-          height: 10
-      ),
+      SizedBox(height: 10),
       FutureBuilder<String?>(
         future: getKidId(),
         builder: (context, userIdSnapshot) {
@@ -272,13 +352,28 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Image(image: AssetImage(AppConstants.EATING_IMG),width: 30,height: 30,fit: BoxFit.cover,),
-                        SizedBox(width: 10,),
-                        Text(AppConstants.EATING, style: AppFont.fontActives,),
+                        Image(
+                          image: AssetImage(AppConstants.EATING_IMG),
+                          width: 30,
+                          height: 30,
+                          fit: BoxFit.cover,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(
+                          AppConstants.EATING,
+                          style: AppFont.fontActives,
+                        ),
                       ],
                     ),
-                    SizedBox(width: 40,),
-                    Text('$eatingCount',style: AppFont.fontActivesCount,)
+                    SizedBox(
+                      width: 40,
+                    ),
+                    Text(
+                      '$eatingCount',
+                      style: AppFont.fontActivesCount,
+                    )
                   ],
                 ),
               );
@@ -286,15 +381,17 @@ Widget buildWidgetFromSnapshot(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>
           );
         },
       ),
-      SizedBox(
-          height: 10
-      ),
+      SizedBox(height: 10),
     ],
   );
 }
 
 class ActiveTime extends StatefulWidget {
-  const ActiveTime({super.key, required this.urlImage, required this.activeName, required this.hiddenActiveTime});
+  const ActiveTime(
+      {super.key,
+      required this.urlImage,
+      required this.activeName,
+      required this.hiddenActiveTime});
 
   final String urlImage;
   final String activeName;
@@ -309,7 +406,6 @@ class _ActiveTimeState extends State<ActiveTime> {
   Timer? timer;
   int elapsedTimeInSeconds = 0;
   DateTime startTime = DateTime.now();
-
 
   @override
   void initState() {
@@ -353,40 +449,41 @@ class _ActiveTimeState extends State<ActiveTime> {
     timer?.cancel();
   }
 
-  void saveRecord() async{
+  void saveRecord() async {
     CollectionReference actives = FirebaseFirestore.instance.collection('actives');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? kidId = await prefs.getString('kidId');
 
     actives.add({
       'name': widget.activeName,
-      'startTime':startTime,
+      'startTime': startTime,
       'endTime': DateTime.now(),
-      'seconds':  elapsedTimeInSeconds,
+      'seconds': elapsedTimeInSeconds,
       'kidId': kidId ?? '',
       'urlImg': widget.urlImage
-    })
-        .then((value) {
-          print("User Added==============================");
-          widget.hiddenActiveTime();
-        })
-        .catchError((error) => print("Failed to add user: $error"));
+    }).then((value) {
+      print("User Added==============================");
+      widget.hiddenActiveTime();
+    }).catchError((error) => print("Failed to add user: $error"));
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top:10, bottom: 10),
+      padding: EdgeInsets.only(top: 10, bottom: 10),
       child: Row(
         children: [
           TextButton(
-              onPressed: (){
-              },
+              onPressed: () {},
               style: TextButton.styleFrom(
-                foregroundColor:  null,
+                foregroundColor: null,
               ),
-              child: Image(image: AssetImage(widget.urlImage),width: 30,height: 30,fit: BoxFit.cover,)
-          ),
+              child: Image(
+                image: AssetImage(widget.urlImage),
+                width: 30,
+                height: 30,
+                fit: BoxFit.cover,
+              )),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -394,33 +491,55 @@ class _ActiveTimeState extends State<ActiveTime> {
               Text(widget.activeName),
             ],
           ),
-          SizedBox(width: 30,),
+          SizedBox(
+            width: 30,
+          ),
           Text(elapsedTimeToString()),
-          isRunning ?
-            TextButton(
-                onPressed: (){
-                  setState(() {
-                    stopTimer();
-                    isRunning = false;
-                  });
-                },
-                child: Image(image: AssetImage('assets/images/icons8-pause-24.png'),width: 25, height: 25,)
-            ):
-            TextButton(
-                onPressed: (){
-                  setState(() {
-                    startTimer();
-                    isRunning = true;
-                  });
-                },
-                child: Image(image: AssetImage('assets/images/icons8-right-30.png'),width: 25, height: 25,)
-            ),
+          isRunning
+              ? TextButton(
+                  onPressed: () {
+                    setState(() {
+                      stopTimer();
+                      isRunning = false;
+                    });
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(CircleBorder()),
+                  ),
+                  child: Image(
+                    image: AssetImage('assets/images/icons8-pause-24.png'),
+                    width: 25,
+                    height: 25,
+                  ),
+                )
+              : TextButton(
+                  onPressed: () {
+                    setState(() {
+                      startTimer();
+                      isRunning = true;
+                    });
+                  },
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all(CircleBorder()),
+                  ),
+                  child: Image(
+                    image: AssetImage('assets/images/icons8-right-30.png'),
+                    width: 25,
+                    height: 25,
+                  ),
+                ),
           TextButton(
-              onPressed: (){
+              onPressed: () {
                 saveRecord();
               },
-              child: Image(image: AssetImage('assets/images/icons8-square-50.png'),width: 20, height: 20,)
-          )
+              style: ButtonStyle(
+                shape: MaterialStateProperty.all(CircleBorder()),
+              ),
+              child: Image(
+                image: AssetImage('assets/images/icons8-square-50.png'),
+                width: 20,
+                height: 20,
+              ))
         ],
       ),
     );
@@ -436,28 +555,14 @@ class ButtonsActive extends StatefulWidget {
 class _ButtonsActiveState extends State<ButtonsActive> {
   bool showActiveTime = false;
   int id = 0;
-  
-  List<Map<String, dynamic>> listActive = [
-    {
-      'urlImage': AppConstants.EATING_IMG,
-      'activeName': AppConstants.EATING
-    },
-    {
-      'urlImage': AppConstants.SLEEPING_IMG,
-      'activeName': AppConstants.SLEEPING},
-    {
-      'urlImage': AppConstants.URINATION_IMG,
-      'activeName': AppConstants.URINATION
-    },
-    {
-      'urlImage': AppConstants.BOWEL_MOVEMENT_IMG,
-      'activeName': AppConstants.BOWEL_MOVEMENT},
-    {
-      'urlImage': AppConstants.BOTTLE_FEEDING_IMG,
-      'activeName': AppConstants.BOTTLE_FEEDING
-    },
-  ];
 
+  List<Map<String, dynamic>> listActive = [
+    {'urlImage': AppConstants.EATING_IMG, 'activeName': AppConstants.EATING},
+    {'urlImage': AppConstants.SLEEPING_IMG, 'activeName': AppConstants.SLEEPING},
+    {'urlImage': AppConstants.URINATION_IMG, 'activeName': AppConstants.URINATION},
+    {'urlImage': AppConstants.BOWEL_MOVEMENT_IMG, 'activeName': AppConstants.BOWEL_MOVEMENT},
+    {'urlImage': AppConstants.BOTTLE_FEEDING_IMG, 'activeName': AppConstants.BOTTLE_FEEDING},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -466,10 +571,8 @@ class _ButtonsActiveState extends State<ButtonsActive> {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5),
-                color: AppColor.background
-            ),
+            decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(5), color: AppColor.background),
             child: Padding(
               padding: EdgeInsets.only(top: 20, bottom: 20),
               child: Row(
@@ -481,7 +584,7 @@ class _ButtonsActiveState extends State<ButtonsActive> {
                         TextButton(
                           onPressed: () async {
                             setState(() {
-                              if(showActiveTime){
+                              if (showActiveTime) {
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
@@ -489,19 +592,23 @@ class _ButtonsActiveState extends State<ButtonsActive> {
                                       backgroundColor: Colors.white,
                                       title: Row(
                                         children: [
-                                          Text("Lưu ý! ", style: AppFont.primaryFont.copyWith(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w600
-                                          )),
-                                          Image(image: AssetImage('assets/images/icons8-error-64.png'),width: 30, height: 30,)
+                                          Text("Lưu ý! ",
+                                              style: AppFont.primaryFont.copyWith(
+                                                  fontSize: 20, fontWeight: FontWeight.w600)),
+                                          Image(
+                                            image: AssetImage('assets/images/icons8-error-64.png'),
+                                            width: 30,
+                                            height: 30,
+                                          )
                                         ],
                                       ),
                                       content: Text("Bạn cần lưu lại bản ghi trước đó"),
                                       actions: [
                                         TextButton(
-                                          child: Text("Đóng", style: AppFont.primaryFont.copyWith(
-                                            fontSize: 15
-                                          ),),
+                                          child: Text(
+                                            "Đóng",
+                                            style: AppFont.primaryFont.copyWith(fontSize: 15),
+                                          ),
                                           onPressed: () {
                                             Navigator.of(context).pop(); // Đóng dialog
                                           },
@@ -510,8 +617,7 @@ class _ButtonsActiveState extends State<ButtonsActive> {
                                     );
                                   },
                                 );
-                              }
-                              else{
+                              } else {
                                 showActiveTime = true;
                                 id = i;
                               }
@@ -519,7 +625,7 @@ class _ButtonsActiveState extends State<ButtonsActive> {
                           },
                           style: ButtonStyle(
                             overlayColor: MaterialStateColor.resolveWith(
-                                  (states) {
+                              (states) {
                                 if (states.contains(MaterialState.pressed)) {
                                   // Color when pressed
                                   return Colors.pinkAccent.withOpacity(0.5);
@@ -538,20 +644,16 @@ class _ButtonsActiveState extends State<ButtonsActive> {
                             ),
                             child: Center(
                                 child: Padding(
-                                  padding: EdgeInsets.all(20),
-                                  child: Image(
-                                    image: AssetImage(listActive[i]['urlImage']),
-                                  ),
-                                )
-                            ),
+                              padding: EdgeInsets.all(20),
+                              child: Image(
+                                image: AssetImage(listActive[i]['urlImage']),
+                              ),
+                            )),
                           ),
                         ),
                         SizedBox(height: 8),
                         // Khoảng cách giữa button và tiêu đề
-                        Text(
-                            listActive[i]['activeName'],
-                            style: AppFont.fontActives
-                        ),
+                        Text(listActive[i]['activeName'], style: AppFont.fontActives),
                       ],
                     )
                 ],
@@ -559,19 +661,18 @@ class _ButtonsActiveState extends State<ButtonsActive> {
             ),
           ),
         ),
-        showActiveTime?
-          ActiveTime(
-              urlImage: listActive[id]['urlImage'],
-              activeName: listActive[id]['activeName'],
-              hiddenActiveTime: (){
-                setState(() {
-                  showActiveTime = false;
-                });
-             },
-          ) :
-          Text('')
+        showActiveTime
+            ? ActiveTime(
+                urlImage: listActive[id]['urlImage'],
+                activeName: listActive[id]['activeName'],
+                hiddenActiveTime: () {
+                  setState(() {
+                    showActiveTime = false;
+                  });
+                },
+              )
+            : Text('')
       ],
     );
   }
 }
-

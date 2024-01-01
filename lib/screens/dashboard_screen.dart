@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:myapp/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../themes/app_fonts.dart';
 import '../widgets/indicator.dart';
@@ -24,8 +25,11 @@ class DashBoardScreenState extends State<DashBoardScreen> {
 
   Future<void> getAllActive() async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String kidId = prefs.getString('kidId') ?? '';
       FirebaseFirestore firestore = FirebaseFirestore.instance;
-      QuerySnapshot querySnapshot = await firestore.collection('actives').get();
+      QuerySnapshot querySnapshot =
+          await firestore.collection('actives').where('kidId', isEqualTo: kidId).get();
 
       setState(() {
         totalActives = querySnapshot.size.toInt();
@@ -37,26 +41,26 @@ class DashBoardScreenState extends State<DashBoardScreen> {
 
   Future<void> getSizeAllByName(String name) async {
     try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String kidId = await prefs.getString('kidId') ?? '';
       FirebaseFirestore firestore = FirebaseFirestore.instance;
       QuerySnapshot querySnapshot = await firestore
           .collection('actives')
           .where('name', isEqualTo: name)
+          .where('kidId', isEqualTo: kidId)
           .get();
 
       setState(() {
         if (name == AppConstants.BOTTLE_FEEDING) {
-          bottleFeedingActive =
-              (querySnapshot.size.toDouble() / totalActives) * 100;
+          bottleFeedingActive = (querySnapshot.size.toDouble() / totalActives) * 100;
         } else if (name == AppConstants.BOWEL_MOVEMENT) {
-          bowelMovementActive =
-              (querySnapshot.size.toDouble() / totalActives) * 100;
+          bowelMovementActive = (querySnapshot.size.toDouble() / totalActives) * 100;
         } else if (name == AppConstants.SLEEPING) {
           sleepingActive = (querySnapshot.size.toDouble() / totalActives) * 100;
         } else if (name == AppConstants.EATING) {
           eatingActive = (querySnapshot.size.toDouble() / totalActives) * 100;
         } else {
-          urinationActive =
-              (querySnapshot.size.toDouble() / totalActives) * 100;
+          urinationActive = (querySnapshot.size.toDouble() / totalActives) * 100;
         }
       });
     } catch (e) {
@@ -83,24 +87,127 @@ class DashBoardScreenState extends State<DashBoardScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-            height: 200,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage(
-                    'assets/images/thiep-chuc-giang-sinh-online.gif'),
-                fit: BoxFit.cover,
+        SizedBox(
+          height: 20,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Tổng quan',
+                style: AppFont.primaryFont.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 23,
+                ),
               ),
-            )),
-        Text(
-          'Tổng quan',
-          style: TextStyle(
-            fontFamily: 'Rubik',
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-            color: Colors.green,
+              SizedBox(
+                height: 20,
+              ),
+              Wrap(
+                runSpacing: 10.0,
+                children: [
+                  Container(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 10,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: Color(0xBD2096D5),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('${AppConstants.EATING}'),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 10,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: Color(0xE88DCCF5),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('${AppConstants.SLEEPING}'),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 10,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: Colors.pinkAccent,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('${AppConstants.BOWEL_MOVEMENT}'),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 10,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: Color(0x8EEF0592),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('${AppConstants.BOTTLE_FEEDING}'),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    child: Row(
+                      children: [
+                        Container(
+                          height: 20,
+                          width: 10,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5.0),
+                            color: Color(0xE8BFFFF8),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text('${AppConstants.URINATION}'),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
         ),
         InkWell(
@@ -110,8 +217,8 @@ class DashBoardScreenState extends State<DashBoardScreen> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: Text("Chọn khoảng thời gian",
-                      style: AppFont.primaryFont
-                          .copyWith(fontSize: 20, fontWeight: FontWeight.w600),
+                      style:
+                          AppFont.primaryFont.copyWith(fontSize: 20, fontWeight: FontWeight.w600),
                       textAlign: TextAlign.center),
                   backgroundColor: Colors.white,
                   content: IntrinsicHeight(
@@ -121,9 +228,10 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                           title: Text(
                             'Tất cả thời gian',
                             style: AppFont.primaryFont.copyWith(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey),
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                            ),
                           ),
                           onTap: () {
                             // Xử lý sự lựa chọn nếu cần
@@ -133,8 +241,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                       ],
                     ),
                   ),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                  contentPadding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   ),
@@ -147,8 +254,7 @@ class DashBoardScreenState extends State<DashBoardScreen> {
           child: Ink(
             decoration: BoxDecoration(
               color: Colors.transparent, // Đặt màu nền là màu trong suốt
-              borderRadius:
-                  BorderRadius.circular(10), // Thiết lập border radius
+              borderRadius: BorderRadius.circular(10), // Thiết lập border radius
             ),
             child: Container(
               padding: EdgeInsets.all(10), // Padding cho nút
@@ -158,102 +264,73 @@ class DashBoardScreenState extends State<DashBoardScreen> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Tất cả thời gian'),
+                      Text(
+                        'Tất cả thời gian',
+                        style: AppFont.primaryFont.copyWith(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ],
                   ),
-                  Icon(Icons.keyboard_arrow_down_sharp,
-                      size: 35, color: Colors.black),
+                  Icon(Icons.keyboard_arrow_down_sharp, size: 35, color: Colors.black),
                 ],
               ),
             ),
           ),
         ),
         SizedBox(height: 20),
-        AspectRatio(
-          aspectRatio: 1.7,
-          child: Row(
-            children: <Widget>[
-              const SizedBox(
-                height: 18,
-              ),
-              Expanded(
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: PieChart(
-                    PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          setState(() {
-                            if (!event.isInterestedForInteractions ||
-                                pieTouchResponse == null ||
-                                pieTouchResponse.touchedSection == null) {
-                              touchedIndex = -1;
-                              return;
-                            }
-                            touchedIndex = pieTouchResponse
-                                .touchedSection!.touchedSectionIndex;
-                          });
-                        },
+        if (totalActives > 0)
+          AspectRatio(
+            aspectRatio: 1.7,
+            child: Row(
+              children: <Widget>[
+                const SizedBox(
+                  height: 18,
+                ),
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (!event.isInterestedForInteractions ||
+                                  pieTouchResponse == null ||
+                                  pieTouchResponse.touchedSection == null) {
+                                touchedIndex = -1;
+                                return;
+                              }
+                              touchedIndex = pieTouchResponse.touchedSection!.touchedSectionIndex;
+                            });
+                          },
+                        ),
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 0,
+                        centerSpaceRadius: 40,
+                        sections: showingSections(),
                       ),
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
-                      sections: showingSections(),
                     ),
                   ),
                 ),
-              ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Indicator(
-                    color: Color(0xBD2096D5),
-                    text: '${AppConstants.EATING}',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: Color(0xE88DCCF5),
-                    text: AppConstants.SLEEPING,
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: Colors.pinkAccent,
-                    text: '${AppConstants.BOWEL_MOVEMENT}',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: Color(0x8EEF0592),
-                    text: '${AppConstants.BOTTLE_FEEDING}',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: Color(0xE8BFFFF8),
-                    text: '${AppConstants.URINATION}',
-                    isSquare: true,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                width: 28,
-              ),
+                const SizedBox(
+                  width: 28,
+                ),
+              ],
+            ),
+          )
+        else
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Không có hoạt động nào',
+              )
             ],
-          ),
-        ),
+          )
       ],
     );
   }
@@ -295,10 +372,8 @@ class DashBoardScreenState extends State<DashBoardScreen> {
             value: eatingActive,
             title: '${eatingActive.toStringAsFixed(2)}%',
             radius: radius,
-            titleStyle: TextStyle(
-                fontSize: fontSize,
-                fontWeight: FontWeight.bold,
-                color: Colors.black),
+            titleStyle:
+                TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold, color: Colors.black),
           );
         case 3:
           return PieChartSectionData(

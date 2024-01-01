@@ -4,6 +4,6 @@ TomTracker APP
 
 ## Getting Started
 
-install package:
+install packages:
 flutter pub get
 
